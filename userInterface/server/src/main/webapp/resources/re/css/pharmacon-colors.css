@@ -1,0 +1,25 @@
+.metro .bg-drugsHeader {
+    background-color: #B5595A !important;
+}
+
+.metro .bg-drugsTile {
+    background-color: #E8A9AA !important;
+}
+
+.metro .bg-drugsButton {
+     background-color: #BB7475 !important;
+ }
+
+.metro .bg-profileHeader {
+    background-color: #FCE564 !important;
+}
+
+.metro .bg-laboratoryHeader {
+    background-color: #892960 !important;
+}
+
+.center {
+    overflow: auto;
+    display: table;
+    margin: auto;
+}
