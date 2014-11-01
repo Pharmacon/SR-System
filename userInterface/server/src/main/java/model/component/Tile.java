@@ -3,12 +3,12 @@ package model.component;
 import model.Content;
 import constatnt.ComponentType;
 
-public class Tile implements Component{
+public class Tile implements Component {
 
 	private Text header;
-	
+
 	private Content tileContent;
-	
+
 	public Text getHeader() {
 		return header;
 	}
@@ -28,7 +28,5 @@ public class Tile implements Component{
 	public String getComponentType() {
 		return ComponentType.TILE.getValue();
 	}
-	
-	
 
 }

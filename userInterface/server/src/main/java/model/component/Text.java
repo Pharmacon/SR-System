@@ -2,10 +2,10 @@ package model.component;
 
 import constatnt.ComponentType;
 
-public class Text implements Component{
+public class Text implements Component {
 
 	private String innerText;
-	
+
 	public Text(String innerText) {
 		super();
 		this.innerText = innerText;
@@ -22,5 +22,5 @@ public class Text implements Component{
 	public String getComponentType() {
 		return ComponentType.TEXT.getValue();
 	}
-	
+
 }

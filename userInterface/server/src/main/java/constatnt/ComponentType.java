@@ -2,10 +2,8 @@ package constatnt;
 
 public enum ComponentType {
 
-	TILE("tile"),
-	TEXT("text"),
-	PANEL("panel");
-	
+	TILE("tile"), TEXT("text"), PANEL("panel");
+
 	private String value;
 
 	private ComponentType(String value) {
@@ -15,5 +13,5 @@ public enum ComponentType {
 	public String getValue() {
 		return value;
 	}
-	
+
 }
