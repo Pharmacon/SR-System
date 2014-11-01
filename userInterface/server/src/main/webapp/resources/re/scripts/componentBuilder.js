@@ -1,14 +1,15 @@
-componentBuilder = (function() {
+$.namespace('pharmacon');
+pharmacon.ComponentBuilder = (function() {
 
     createCmp = function (componentType, config) {
         var newComponent;
         switch(componentType){
             case 'tile' :{
-                newComponent = tileFactory.buildTile(config);
+                newComponent = pharmacon.factory.TileFactory.buildTile(config);
                 break;
             }
             case 'text':{
-                newComponent = textFactory.buildText(config);
+                newComponent = pharmacon.factory.TextFactory.buildText(config);
                 break;
             }
             default:

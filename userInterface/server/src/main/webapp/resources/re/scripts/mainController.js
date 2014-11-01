@@ -1,9 +1,10 @@
-var mainController = (function() {
+$.namespace('pharmacon');
+pharmacon.mainController = (function() {
     return {
         getPage: function () {
             $.get("hello/getMainPage",function(data,status){
                 var body = $("body");
-                componentBuilder.buildComponent(body ,data.content);
+                pharmacon.ComponentBuilder.buildComponent(body ,data.content);
 
             });
         }

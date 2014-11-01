@@ -1,4 +1,5 @@
-var tileFactory = (function() {
+$.namespace('pharmacon.factory');
+pharmacon.factory.TileFactory = (function() {
 
     return {
 
@@ -6,8 +7,8 @@ var tileFactory = (function() {
             var tile = $(document.createElement('div'));
             var tileHeader = tileConfig.header;
             var tileContentConfig = tileConfig.tileContent.content;
-            componentBuilder.buildComponent(tile, tileHeader);
-            componentBuilder.buildComponent(tile, tileContentConfig);
+            pharmacon.ComponentBuilder.buildComponent(tile, tileHeader);
+            pharmacon.ComponentBuilder.buildComponent(tile, tileContentConfig);
             tile.addClass('tile triple double vertical bg-blue fg-white');
             return tile;
         }

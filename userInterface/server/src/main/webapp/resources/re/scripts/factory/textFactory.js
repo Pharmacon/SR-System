@@ -1,4 +1,5 @@
-var textFactory = (function() {
+$.namespace('pharmacon.factory');
+pharmacon.factory.TextFactory = (function() {
 
     return {
 
