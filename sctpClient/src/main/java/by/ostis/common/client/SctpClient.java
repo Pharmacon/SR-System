@@ -68,7 +68,7 @@ public class SctpClient implements ISctpClient{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.print(result);
+			System.out.print(result.toString());
 		return null;
 	}
 	private byte[] receiveDate(int size){

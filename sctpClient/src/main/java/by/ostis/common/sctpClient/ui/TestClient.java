@@ -9,8 +9,9 @@ public class TestClient {
 	public static void main(String[] args) {
 		ISctpClient client=new SctpClient();
 		client.init("192.168.1.10",55770);
-		client.getScLinkContent(new ScAdress());
-
+		client.getScLinkContent(new ScAdress(0,5078));
+		//client.getScLinkContent(new ScAdress(0,4853));
+		client.getScLinkContent(new ScAdress(0,5078));
 	}
 
 }
