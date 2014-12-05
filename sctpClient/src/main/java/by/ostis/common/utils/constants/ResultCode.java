@@ -9,7 +9,6 @@ public enum ResultCode {
     private long value;
 
     private ResultCode(long value) {
-
         this.value = value;
     }
 
