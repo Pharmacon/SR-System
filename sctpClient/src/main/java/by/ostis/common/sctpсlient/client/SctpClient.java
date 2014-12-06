@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 
 import by.ostis.common.sctpсlient.model.ScAddress;
-import by.ostis.common.sctpсlient.utils.SctpCommandType;
+import by.ostis.common.sctpсlient.utils.constants.SctpCommandType;
 
 public class SctpClient implements ISctpClient {
 	private Socket socket = null;

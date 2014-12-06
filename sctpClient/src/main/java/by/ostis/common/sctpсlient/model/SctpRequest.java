@@ -1,6 +1,6 @@
 package by.ostis.common.sctpсlient.model;
 
-import by.ostis.common.sctpсlient.utils.SctpCommandType;
+import by.ostis.common.sctpсlient.utils.constants.SctpCommandType;
 
 public class SctpRequest {
 

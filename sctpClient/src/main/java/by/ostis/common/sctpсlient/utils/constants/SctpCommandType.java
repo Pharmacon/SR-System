@@ -1,4 +1,4 @@
-package by.ostis.common.sctpсlient.utils;
+package by.ostis.common.sctpсlient.utils.constants;
 
 public enum SctpCommandType {
 
