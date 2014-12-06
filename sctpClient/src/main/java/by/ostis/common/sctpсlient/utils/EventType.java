@@ -1,4 +1,4 @@
-package by.ostis.common.utils;
+package by.ostis.common.sctpсlient.utils;
 
 public enum EventType {
 

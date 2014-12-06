@@ -1,22 +1,22 @@
-package by.ostis.common.model;
+package by.ostis.common.sctpсlient.model;
 
 public class ScAdress {
-	private int segment;
-	private int offset;
-	public ScAdress(int segment,int offset){
+	private short segment;
+	private short offset;
+	public ScAdress(short segment,short offset){
 		this.segment=segment;
 		this.offset=offset;
 	}
 	public int getSegment() {
 		return segment;
 	}
-	public void setSegment(int segment) {
+	public void setSegment(short segment) {
 		this.segment = segment;
 	}
 	public int getOffset() {
 		return offset;
 	}
-	public void setOffset(int offset) {
+	public void setOffset(short offset) {
 		this.offset = offset;
 	}
 }

@@ -1,14 +1,13 @@
-package by.ostis.common.client;
+package by.ostis.common.sctpсlient.client;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
-import com.sun.corba.se.impl.ior.ByteBuffer;
-
-import by.ostis.common.model.ScAdress;
-import by.ostis.common.utils.ResultCode;
+import by.ostis.common.sctpсlient.model.ScAdress;
+import by.ostis.common.sctpсlient.utils.ResultCode;
 
 public class SctpClient implements ISctpClient{
 	private Socket socket=null;
@@ -44,19 +43,9 @@ public class SctpClient implements ISctpClient{
 
 	@Override
 	public byte[] getScLinkContent(ScAdress adr) {
-		ByteBuffer paramsBuf=new ByteBuffer(30);
-		paramsBuf.append(adr.getSegment());
-		paramsBuf.append(adr.getOffset());
-		paramsBuf.trimToSize();
-		ByteBuffer commonBuf=new ByteBuffer(30);
-		commonBuf.append(0x09);
-		commonBuf.append(0);
-		commonBuf.append(0);
-		commonBuf.append(paramsBuf.size());
-		commonBuf.append(paramsBuf.toString());
-		commonBuf.trimToSize();
+		ByteBuffer commonBuf=ByteBuffer.allocate(12);
 		try {
-			os.write(commonBuf.toArray());
+			os.write(commonBuf.array());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
