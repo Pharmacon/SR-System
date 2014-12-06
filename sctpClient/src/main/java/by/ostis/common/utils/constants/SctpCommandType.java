@@ -23,14 +23,22 @@ public enum SctpCommandType {
     STATISTICS(0xa2), // return usage statistics from server
     SHUTDOWN(0xfe); // disconnect client from server;
 
-    private long value;
+    private byte value;
 
-    private SctpCommandType(long value) {
-
+    private SctpCommandType(byte value) {
+    		
         this.value = value;
     }
+    
+    
 
-    public long getValue() {
+    private SctpCommandType(int intValue) {
+		this.value = (byte)intValue;
+	}
+
+
+
+	public byte getValue() {
 
         return value;
     }
