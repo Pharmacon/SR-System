@@ -1,4 +1,4 @@
-package by.ostis.common.client;
+package by.ostis.common.sctpсlient.client;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,8 +6,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
-import by.ostis.common.model.ScAddress;
-import by.ostis.common.utils.constants.SctpCommandType;
+import by.ostis.common.sctpсlient.model.ScAddress;
+import by.ostis.common.sctpсlient.utils.SctpCommandType;
 
 public class SctpClient implements ISctpClient {
 	private Socket socket = null;
@@ -73,25 +73,21 @@ public class SctpClient implements ISctpClient {
 	@Override
 	public byte[] checkElement(ScAddress address) {
 		ByteBuffer bb = ByteBuffer.allocate(14);
-		bb.put(SctpCommandType.CHECK_ELEMENT.getValue())
-		.put((byte)0)
-		.putInt(0)
-		//.putInt(4);
-		.put((byte)4)
-		.put((byte)0)
-		.put((byte)0)
-		.put((byte)0);
+		bb.put(SctpCommandType.CHECK_ELEMENT.getValue()).put((byte) 0)
+				.putInt(0)
+
+				.put((byte) 4).put((byte) 0).put((byte) 0).put((byte) 0);
 		bb.putShort(address.getSegment()).putShort(address.getOffset());
-		
-		for(int i = 0; i < bb.array().length; ++i){
+		for (int i = 0; i < bb.array().length; ++i) {
 			System.out.print(bb.array()[i] + " ");
 		}
+
 		try {
 			os.write(bb.array());
-			byte [] result = new byte[10];
+			byte[] result = new byte[10];
 			System.out.println("\nresponse");
 			is.read(result, 0, 10);
-			//PRINT
+			// PRINT
 			System.out.print(result[0]);
 			System.out.print('|');
 			for (int i = 1; i < 5; i++) {
@@ -104,12 +100,12 @@ public class SctpClient implements ISctpClient {
 				System.out.print(result[i]);
 			}
 			System.out.print('\n');
+			return result;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		return null;
 	}
+
 }

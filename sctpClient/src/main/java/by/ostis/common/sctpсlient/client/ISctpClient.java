@@ -1,7 +1,6 @@
-package by.ostis.common.client;
+package by.ostis.common.sctpсlient.client;
+import by.ostis.common.sctpсlient.model.ScAddress;
 
-import by.ostis.common.model.ScAddress;
-import by.ostis.common.utils.constants.ResultCode;
 
 public interface ISctpClient {
 	public void init(String host,int port);

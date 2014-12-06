@@ -1,4 +1,4 @@
-package by.ostis.common.utils.constants;
+package by.ostis.common.sctpсlient.utils;
 
 public enum IteratorType {
 
