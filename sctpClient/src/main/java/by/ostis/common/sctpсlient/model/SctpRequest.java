@@ -7,7 +7,7 @@ import by.ostis.common.sctpсlient.utils.constants.SctpCommandType;
 
 public class SctpRequest {
 	public class SctpRequestHeader {
-		private SctpCommandType commandaType;
+		private SctpCommandType commandType;
 
 		private byte flag;
 
@@ -17,14 +17,14 @@ public class SctpRequest {
 
 		public SctpRequestHeader(SctpCommandType commandType, byte flag,
 				int commandId, int argumentSize) {
-			this.commandaType = commandType;
+			this.commandType = commandType;
 			this.argumentSize = argumentSize;
 			this.commandId = commandId;
 			this.flag = flag;
 		}
 
-		public SctpCommandType getCommandaType() {
-			return commandaType;
+		public SctpCommandType getCommandType() {
+			return commandType;
 		}
 
 		public byte getFlag() {
