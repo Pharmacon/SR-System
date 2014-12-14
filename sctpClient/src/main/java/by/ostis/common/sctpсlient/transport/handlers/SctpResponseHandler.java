@@ -1,6 +1,6 @@
 package by.ostis.common.sctpсlient.transport.handlers;
 
-import by.ostis.common.sctpсlient.model.SctpResponse;
+import by.ostis.common.sctpсlient.model.request.SctpResponse;
 
 public class SctpResponseHandler implements ISctpResponseHandler {
 

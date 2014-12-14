@@ -37,4 +37,9 @@ public class ScAddress implements ScParameter{
 		tempBuffer.putShort(offset);
 		return tempBuffer.array();
 	}
+
+	@Override
+	public int getSize() {
+		return ScParameterSize.SC_ADDRESS.getSize();
+	}
 }

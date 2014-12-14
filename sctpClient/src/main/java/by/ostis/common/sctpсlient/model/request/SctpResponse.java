@@ -1,4 +1,4 @@
-package by.ostis.common.sctpсlient.model;
+package by.ostis.common.sctpсlient.model.request;
 
 import java.util.ArrayList;
 import java.util.List;

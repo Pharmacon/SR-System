@@ -12,7 +12,4 @@ public enum ScParameterSize {
 	private ScParameterSize(int size) {
 		this.size = size;
 	}
-	
-	
-
 }
