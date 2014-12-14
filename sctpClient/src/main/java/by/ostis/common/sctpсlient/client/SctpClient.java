@@ -5,8 +5,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import by.ostis.common.sctpсlient.model.ScAddress;
+import by.ostis.common.sctpсlient.model.SctpResponse;
 import by.ostis.common.sctpсlient.model.request.SctpRequest;
-import by.ostis.common.sctpсlient.model.request.SctpResponse;
 import by.ostis.common.sctpсlient.transport.ISctpRequestSender;
 import by.ostis.common.sctpсlient.transport.SctpRequestSender;
 import by.ostis.common.sctpсlient.utils.constants.SctpCommandType;
