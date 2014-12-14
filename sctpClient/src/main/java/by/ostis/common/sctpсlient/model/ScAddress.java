@@ -1,6 +1,10 @@
 package by.ostis.common.sctpсlient.model;
 
-public class ScAddress {
+import java.nio.ByteBuffer;
+
+import by.ostis.common.sctpсlient.utils.constants.ScParameterSize;
+
+public class ScAddress implements ScParameter{
 	
 	private short segment;
 	private short offset;
@@ -24,5 +28,13 @@ public class ScAddress {
 
 	public void setOffset(short offset) {
 		this.offset = offset;
+	}
+
+	@Override
+	public byte[] getBytes() {
+		ByteBuffer tempBuffer = ByteBuffer.allocate(ScParameterSize.SC_ADDRESS.getSize());
+		tempBuffer.putShort(segment);
+		tempBuffer.putShort(offset);
+		return tempBuffer.array();
 	}
 }

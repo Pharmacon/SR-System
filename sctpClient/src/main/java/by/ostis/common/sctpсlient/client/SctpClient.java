@@ -14,7 +14,6 @@ public class SctpClient implements ISctpClient {
 	private OutputStream os;
 	private InputStream is;
 
-	@Override
 	public void init(String host, int port) {
 		try {
 			socket = new Socket(host, port);
@@ -26,7 +25,6 @@ public class SctpClient implements ISctpClient {
 		}
 	}
 
-	@Override
 	public void shutdown() {
 		try {
 			socket.close();
@@ -36,7 +34,6 @@ public class SctpClient implements ISctpClient {
 		}
 	}
 
-	@Override
 	public byte[] getScLinkContent(ScAddress adr) {
 		// ByteBuffer paramsBuf=new ByteBuffer(30);
 		// paramsBuf.append(adr.getSegment());
@@ -70,7 +67,6 @@ public class SctpClient implements ISctpClient {
 		return null;
 	}
 
-	@Override
 	public byte[] checkElement(ScAddress address) {
 		ByteBuffer bb = ByteBuffer.allocate(14);
 		bb.put(SctpCommandType.CHECK_ELEMENT.getValue()).put((byte) 0)
@@ -107,5 +103,6 @@ public class SctpClient implements ISctpClient {
 		}
 		return null;
 	}
+
 
 }
