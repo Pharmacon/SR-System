@@ -9,6 +9,10 @@ public class SctpRequestBody {
 
 	private List<ScParameter> body;
 	
+	public List<ScParameter> getParameterList(){
+		return body;
+	}
+	
 	public void addParameter(ScParameter parameter){
 		body.add(parameter);
 	}
@@ -19,12 +23,16 @@ public class SctpRequestBody {
 		}
 	}	
 	
-	public int getSize(){
-		int size = 0;
+	public int getByteLenght(){
+		int byteLenght = 0;
 		for (ScParameter scParameter : body) {
-			size += scParameter.getSize();
+			byteLenght += scParameter.getSize();
 		}
-		return size;
+		return byteLenght;
+	}
+	
+	public int getSize(){
+		return body.size();
 	}
 	
 	
