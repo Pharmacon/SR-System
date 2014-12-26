@@ -26,6 +26,6 @@ public class TypeBuilder {
 		short segment=buffer.getShort(SEGMENT_BEGIN_INDEX);
 		short offset=buffer.getShort(OFFSET_BEGIN_INDEX);
 		return new ScAddress(segment, offset);
+		
 	}
-	
 }

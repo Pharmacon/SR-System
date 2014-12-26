@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import by.ostis.common.sctpclient.model.response.ScElementType;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 import by.ostis.common.sctpclient.model.response.SctpResultType;
@@ -89,7 +88,6 @@ public class SctpResponseBuilder {
 		builders.put(SctpCommandType.SET_SYSIDTF, new EmptyResponseBodyBuider());
 		//TODO:0xa2
 		//TODO:0xa3 ask version encoding
-		
 		
 	}
 

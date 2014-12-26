@@ -2,12 +2,6 @@ package by.ostis.common.sctpclient.transport.handlers;
 
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 
-public class SctpResponseHandler implements ISctpResponseHandler {
-
-	@Override
-	public SctpResponse handleResponse(byte[] response) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+public interface SctpResponseHandler {
+public SctpResponse handleResponse(byte[] response);
 }
