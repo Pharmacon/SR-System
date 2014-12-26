@@ -1,14 +1,44 @@
 package by.ostis.common.sctpclient.transport.handlers;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.List;
+
+import by.ostis.common.sctpclient.model.ScParameter;
 import by.ostis.common.sctpclient.model.request.SctpRequest;
+import by.ostis.common.sctpclient.model.request.SctpRequestBody;
+import by.ostis.common.sctpclient.model.request.SctpRequestHeader;
+import by.ostis.common.sctpclient.utils.constants.ScParameterSize;
 
 
 public class SctpRequestHandlerImpl implements SctpRequestHandler {
 
 	@Override
 	public byte[] handleRequest(SctpRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		byte[] bodyByteArray = parseRequestBody(request.getBody());
+		byte[] headerByteArray = parseRequestHeader(request.getHeader());
+		ByteBuffer resultBuffer = ByteBuffer.allocate(bodyByteArray.length + headerByteArray.length);
+		resultBuffer.put(headerByteArray);
+		resultBuffer.put(bodyByteArray);
+		return resultBuffer.array();
 	}
-
+	
+	private byte[] parseRequestHeader(SctpRequestHeader requestHeader){
+		ByteBuffer tempBuffer = ByteBuffer.allocate(ScParameterSize.SC_HEADER.getSize());
+		tempBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		tempBuffer.put(requestHeader.getCommandType().getValue());
+		tempBuffer.put(requestHeader.getFlag());
+		tempBuffer.putInt(requestHeader.getCommandId());
+		tempBuffer.putInt(requestHeader.getArgumentSize());
+		return tempBuffer.array();
+	}
+	
+	private byte[] parseRequestBody(SctpRequestBody requestBody){
+		ByteBuffer tempBuffer = ByteBuffer.allocate(requestBody.getByteLenght());
+		List<ScParameter> parameterList = requestBody.getParameterList();
+		for (ScParameter parameter : parameterList) {
+			tempBuffer.put(parameter.getBytes());
+		}
+		return tempBuffer.array();
+	}
 }

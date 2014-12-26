@@ -1,7 +1,7 @@
 package by.ostis.common.sctpclient.utils.constants;
 
 public enum ScParameterSize {
-	SC_ADDRESS(4),SC_CAPACITY(4);
+	SC_ADDRESS(4),SC_CAPACITY(4), SC_HEADER(11);
 	
 	private int size;
 
