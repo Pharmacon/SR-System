@@ -52,8 +52,7 @@ public class SctpResponseBuilder {
 	}
 
 	
-	public SctpResponseBuilder(byte[] bytes) {
-		this.bytes = bytes;
+	public SctpResponseBuilder() {
 		//0x01
 		builders.put(SctpCommandType.CHECK_ELEMENT, new EmptyResponseBodyBuider());
 		//TODO: 0x02  Ask ElementTypes and add to ScElementType enum
@@ -92,6 +91,7 @@ public class SctpResponseBuilder {
 	}
 
 	public SctpResponse buildSctpResponse(byte[] bytes){
+		this.bytes = bytes; 
 		SctpResponse response=new SctpResponse();
 		SctpResponseHeader header=new SctpResponseHeader();
 		header.setCommandId(getId());
