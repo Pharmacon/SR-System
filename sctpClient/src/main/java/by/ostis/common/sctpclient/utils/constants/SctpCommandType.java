@@ -37,5 +37,12 @@ public enum SctpCommandType {
 
 		return value;
 	}
-
+	public static SctpCommandType getByCode(byte code){
+		for (SctpCommandType commandType : values()) {
+			if (commandType.getValue() == code) {
+				return commandType;
+			}
+		}
+		throw new IllegalArgumentException("Unsupported SctpCommandType");
+	}
 }

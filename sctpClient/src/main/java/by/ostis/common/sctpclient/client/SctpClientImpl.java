@@ -32,7 +32,6 @@ public class SctpClientImpl implements SctpClient {
 	public ScElementType checkElement(ScAddress address) {
 		SctpResponse response = sender.sendRequest(requestBuilder.buildRequest(
 				RequestHeaderType.CHECK_ELEMENT_COMMAND, address));
-		response.getBody().get(0);
 		return (ScElementType) response.getBody().get(0);
 	}
 

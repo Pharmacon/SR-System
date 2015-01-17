@@ -15,6 +15,13 @@ public enum SctpResultType {
 	public byte getCode() {
 		return code;
 	}
-
+	public static SctpResultType getByCode(byte result){
+		for (SctpResultType resultType : values()) {
+			if (resultType.getCode() == result) {
+				return resultType;
+			}
+		}
+		throw new IllegalArgumentException("Unsupported sctpResultType");
+	}
     
 }

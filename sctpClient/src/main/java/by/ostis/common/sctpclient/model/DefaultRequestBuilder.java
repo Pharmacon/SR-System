@@ -17,6 +17,7 @@ public class DefaultRequestBuilder implements RequestBuilder {
 		SctpRequestHeader requestHeader = headerType.getRequestHeader();
 		requestHeader.setArgumentSize(requestBody.getByteLenght());
 		newRequest.setHeader(requestHeader);
+		newRequest.setBody(requestBody);
 		
 		return newRequest;
 	}

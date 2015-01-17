@@ -4,7 +4,9 @@ import by.ostis.common.sctpclient.model.request.SctpRequest;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 
 public interface SctpRequestSender {
-public void init(String host,int port);
-public void shutdown();
-public SctpResponse sendRequest(SctpRequest request);
+	void init(String host, int port);
+
+	void shutdown();
+
+	SctpResponse sendRequest(SctpRequest request);
 }
