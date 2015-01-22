@@ -4,7 +4,8 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 public enum RequestHeaderType {
 
-	CHECK_ELEMENT_COMMAND(SctpCommandType.CHECK_ELEMENT, (byte)0, 0);
+	CHECK_ELEMENT_COMMAND(SctpCommandType.CHECK_ELEMENT, (byte)0, 0),
+	SEARCH_ELEMENT_BY_IDENTIFIER(SctpCommandType.FIND_ELEMENT_BY_SYSITDF, (byte)0, 0);
 	
 	private SctpCommandType commandType;
 	

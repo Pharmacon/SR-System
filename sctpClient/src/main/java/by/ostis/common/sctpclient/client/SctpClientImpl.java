@@ -11,7 +11,6 @@ import by.ostis.common.sctpclient.model.request.RequestHeaderType;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.transport.SctpRequestSender;
 import by.ostis.common.sctpclient.transport.SctpRequestSenderImpl;
-import by.ostis.common.sctpclient.utils.constants.ScElementType;
 
 public class SctpClientImpl implements SctpClient {
 
@@ -42,7 +41,7 @@ public class SctpClientImpl implements SctpClient {
 		return null;
 	}
 
-	public ScElementType checkElement(ScAddress address) {
+	public SctpResponse checkElementExistence(ScAddress address) {
 		SctpResponse response = new SctpResponse();
 		try {
 			response = sender.sendRequest(requestBuilder.buildRequest(
@@ -51,7 +50,19 @@ public class SctpClientImpl implements SctpClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return (ScElementType) response.getBody().get(0);
+		return response;
+	}
+
+	@Override
+	public SctpResponse searchElement(ScRefContent identifier) {
+		SctpResponse response = new SctpResponse();
+		try {
+			response = sender.sendRequest(requestBuilder.buildRequest(RequestHeaderType.SEARCH_ELEMENT_BY_IDENTIFIER, identifier));
+		} catch (TransportException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
 	}
 
 }

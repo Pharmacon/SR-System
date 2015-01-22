@@ -3,12 +3,11 @@ package by.ostis.common.sctpclient.model.response;
 import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 public class SctpResponseHeader {
-	
+
 	private SctpCommandType commandType;
 	private int commandId;
 	private SctpResultType resultType;
 	private int argumentSize;
-	
 
 	public SctpResponseHeader() {
 	}
@@ -44,6 +43,5 @@ public class SctpResponseHeader {
 	public void setResultType(SctpResultType resultType) {
 		this.resultType = resultType;
 	}
-	
-	
+
 }

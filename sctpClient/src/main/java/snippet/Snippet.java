@@ -10,7 +10,7 @@ public class Snippet {
 		SctpClient client = new SctpClientImpl();
 		client.init("localhost", 55770);
 		ScAddress address = new ScAddress((short)0,(short)5702);
-		System.out.print("sc-machine response:" + client.checkElement(address).toString());
+		System.out.print("sc-machine response:" + client.checkElementExistence(address).toString());
 	}
 }
 

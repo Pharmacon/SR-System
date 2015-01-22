@@ -43,7 +43,6 @@ public abstract class ByteBufferWrapper {
 	
 	public ByteBufferWrapper putString(String string){
 		byte[] stringAsBytes = string.getBytes();
-		int count = stringAsBytes.length;
 		//TODO claculate size;
 		currentBuffer.put(stringAsBytes);
 		return this;
