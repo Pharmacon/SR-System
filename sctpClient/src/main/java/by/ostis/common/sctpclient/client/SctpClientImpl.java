@@ -1,5 +1,8 @@
 package by.ostis.common.sctpclient.client;
 
+import by.ostis.common.sctpclient.exception.InitializationException;
+import by.ostis.common.sctpclient.exception.ShutdownException;
+import by.ostis.common.sctpclient.exception.TransportException;
 import by.ostis.common.sctpclient.model.DefaultRequestBuilder;
 import by.ostis.common.sctpclient.model.RequestBuilder;
 import by.ostis.common.sctpclient.model.ScAddress;
@@ -17,12 +20,22 @@ public class SctpClientImpl implements SctpClient {
 
 	@Override
 	public void init(String host, int port) {
-		sender.init(host, port);
+		try {
+			sender.init(host, port);
+		} catch (InitializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void shutdown() {
-		sender.shutdown();
+		try {
+			sender.shutdown();
+		} catch (ShutdownException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public ScRefContent getScLinkContent(ScAddress adr) {
@@ -30,8 +43,14 @@ public class SctpClientImpl implements SctpClient {
 	}
 
 	public ScElementType checkElement(ScAddress address) {
-		SctpResponse response = sender.sendRequest(requestBuilder.buildRequest(
-				RequestHeaderType.CHECK_ELEMENT_COMMAND, address));
+		SctpResponse response = new SctpResponse();
+		try {
+			response = sender.sendRequest(requestBuilder.buildRequest(
+					RequestHeaderType.CHECK_ELEMENT_COMMAND, address));
+		} catch (TransportException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return (ScElementType) response.getBody().get(0);
 	}
 

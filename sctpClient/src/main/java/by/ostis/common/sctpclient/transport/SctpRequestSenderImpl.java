@@ -6,14 +6,15 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import by.ostis.common.sctpclient.exception.ErrorMessage;
+import by.ostis.common.sctpclient.exception.InitializationException;
+import by.ostis.common.sctpclient.exception.ShutdownException;
+import by.ostis.common.sctpclient.exception.TransportException;
 import by.ostis.common.sctpclient.model.ScParameter;
 import by.ostis.common.sctpclient.model.request.SctpRequest;
 import by.ostis.common.sctpclient.model.request.SctpRequestBody;
@@ -26,13 +27,9 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 public class SctpRequestSenderImpl implements SctpRequestSender {
 
-	private static final int COMMAND_TYPE_CODE_INDEX = 0;
-	private static final int ID_BEGIN_INDEX = 1;
 	private static final int ID_BYTE_SIZE = 4;
 	private static final int RESULT_TYPE_CODE_SIZE = 1;
-	private static final int SIZE_BEGIN_INDEX = 6;
 	private static final int SIZE_BYTE_SIZE = 4;
-	private static final int PARAMETERS_BEGIN_INDEX = 10;
 
 	private InputStream inputStream;
 	private OutputStream outputStream;
@@ -47,24 +44,24 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public void init(String host, int port) {
+	public void init(String host, int port) throws InitializationException{
 		try {
 			socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 		} catch (IOException e) {
 			logger.error(e.getMessage());
-			//BARBOS Throw custom exception
+			throw new InitializationException(ErrorMessage.TRANSPORT_INIT_ERROR);
 		}
 	}
 
 	@Override
-	public void shutdown() {
+	public void shutdown() throws ShutdownException{
 		try {
 			closeResources();
 		} catch (IOException e) {
 			logger.error(e.getMessage());
-			//BARBOS Throw custom exception
+			throw new ShutdownException(ErrorMessage.SHUTDOWN_ERROR);
 		}
 	}
 
@@ -75,18 +72,18 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public SctpResponse sendRequest(SctpRequest request) {
+	public SctpResponse sendRequest(SctpRequest request) throws TransportException{
 		try {
 			byte[] data = getRequestBytes(request);
 			outputStream.write(data);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
-			//BARBOS Throw custom exception
+			throw new TransportException(ErrorMessage.REQUEST_SEND_ERROR);
 		}
 		return getResponse();
 	}
 	
-	private SctpResponse getResponse() {
+	private SctpResponse getResponse() throws TransportException{
 		SctpResponse response = new SctpResponse();
 		SctpResponseHeader header = new SctpResponseHeader();
 		try {
@@ -117,8 +114,8 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 			response.setBody(bodyBuider.getBody(parameterBytes, header));
 
 		} catch (IOException e) {
-			// BARBOS throw custom exception
-			// BARBOS Add logging
+			logger.error(e.getMessage());
+			throw new TransportException(ErrorMessage.RESPONSE_READ_ERROR);
 		}
 		return response;
 	}
