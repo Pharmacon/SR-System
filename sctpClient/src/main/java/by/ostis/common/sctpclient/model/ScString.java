@@ -5,7 +5,7 @@ import java.nio.ByteOrder;
 
 import by.ostis.common.sctpclient.utils.constants.ScParameterSize;
 
-public class ScRefContent implements ScParameter {
+public class ScString implements ScParameter {
 	
 	private String content;
 	private int capacity;
@@ -22,7 +22,7 @@ public class ScRefContent implements ScParameter {
 		this.capacity = capacity;
 	}
 
-	public ScRefContent(int capacity, String content) {
+	public ScString(int capacity, String content) {
 		this.capacity = capacity;
 		this.content = content;
 	}
