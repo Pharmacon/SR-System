@@ -15,6 +15,11 @@ public class ScAddress implements ScParameter{
 		this.segment = segment;
 		this.offset = offset;
 	}
+	
+	public ScAddress(int segment, int offset) {
+		this((short)segment, (short)offset);
+
+	}
 
 	public short getSegment() {
 		return segment;
