@@ -15,7 +15,7 @@ import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 import by.ostis.common.sctpclient.model.response.SctpResultType;
 import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
-public class BytesSctpResponseBuilder implements SctpResponseBuilder{
+class BytesSctpResponseBuilder implements SctpResponseBuilder{
 
 	private static final int ID_BYTE_SIZE = 4;
 	private static final int RESULT_TYPE_CODE_SIZE = 1;

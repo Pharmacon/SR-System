@@ -10,7 +10,7 @@ import by.ostis.common.sctpclient.model.request.SctpRequestBody;
 import by.ostis.common.sctpclient.model.request.SctpRequestHeader;
 import by.ostis.common.sctpclient.utils.constants.ScParameterSize;
 
-public class SctpRequestBytesBuilder {
+class SctpRequestBytesBuilder {
 
 	public static byte[] build(SctpRequest request) {
 
