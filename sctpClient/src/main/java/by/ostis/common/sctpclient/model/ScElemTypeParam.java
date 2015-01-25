@@ -1,23 +1,23 @@
 package by.ostis.common.sctpclient.model;
 
-import by.ostis.common.sctpclient.utils.constants.ScArcType;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
 
 public class ScElemTypeParam implements ScParameter {
 	private ScElementType type;
-	public ScElemTypeParam(ScElementType type){
+
+	public ScElemTypeParam(final ScElementType type) {
 		this.type = type;
 	}
+
 	@Override
 	public byte[] getBytes() {
-		// TODO Auto-generated method stub
+		// TODO need to implement
 		return null;
 	}
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return ScElementType.SC_ELEMENT_BYTE_SIZE;
 	}
 
 }
