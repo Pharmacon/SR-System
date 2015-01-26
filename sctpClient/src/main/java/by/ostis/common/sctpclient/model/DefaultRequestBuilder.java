@@ -18,7 +18,7 @@ public class DefaultRequestBuilder implements RequestBuilder {
 		requestHeader.setArgumentSize(requestBody.getByteLenght());
 		newRequest.setHeader(requestHeader);
 		newRequest.setBody(requestBody);
-		
+
 		return newRequest;
 	}
 

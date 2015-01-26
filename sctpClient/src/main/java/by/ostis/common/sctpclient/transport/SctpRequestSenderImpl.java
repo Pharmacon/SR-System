@@ -35,7 +35,7 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	private OutputStream outputStream;
 	private Socket socket;
 	private RespBodyBuilderProvider respBodyBuilder;
-	
+
 	private Logger logger = LogManager.getLogger(SctpRequestSender.class);
 
 	public SctpRequestSenderImpl() {
@@ -44,7 +44,7 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public void init(String host, int port) throws InitializationException{
+	public void init(String host, int port) throws InitializationException {
 		try {
 			socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
@@ -56,7 +56,7 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public void shutdown() throws ShutdownException{
+	public void shutdown() throws ShutdownException {
 		try {
 			closeResources();
 		} catch (IOException e) {
@@ -72,7 +72,8 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public SctpResponse sendRequest(SctpRequest request) throws TransportException{
+	public SctpResponse sendRequest(SctpRequest request)
+			throws TransportException {
 		try {
 			byte[] data = getRequestBytes(request);
 			outputStream.write(data);
@@ -82,17 +83,16 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 		}
 		return getResponse();
 	}
-	
-	private SctpResponse getResponse() throws TransportException{
+
+	private SctpResponse getResponse() throws TransportException {
 		SctpResponse response = new SctpResponse();
 		SctpResponseHeader header = new SctpResponseHeader();
 		try {
 
-			
 			byte code;
 			code = (byte) inputStream.read();
 			header.setCommandType(SctpCommandType.getByCode(code));
-			
+
 			byte[] bytes = getBytesFromResp(ID_BYTE_SIZE);
 			int commandId = getIntFromBytes(bytes);
 			header.setCommandId(commandId);
@@ -107,9 +107,9 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 			response.setHeader(header);
 
 			SctpCommandType commandType = header.getCommandType();
-			
+
 			byte[] parameterBytes = getBytesFromResp(header.getArgumentSize());
-			
+
 			RespBodyBuilder bodyBuider = respBodyBuilder.create(commandType);
 			response.setBody(bodyBuider.getBody(parameterBytes, header));
 

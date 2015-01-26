@@ -5,9 +5,8 @@ import java.nio.ByteOrder;
 
 import by.ostis.common.sctpclient.utils.constants.ScParameterSize;
 
-public class ScAddress implements ScParameter{
-	
-	
+public class ScAddress implements ScParameter {
+
 	private short segment;
 	private short offset;
 
@@ -34,7 +33,8 @@ public class ScAddress implements ScParameter{
 
 	@Override
 	public byte[] getBytes() {
-		ByteBuffer tempBuffer = ByteBuffer.allocate(ScParameterSize.SC_ADDRESS.getSize());
+		ByteBuffer tempBuffer = ByteBuffer.allocate(ScParameterSize.SC_ADDRESS
+				.getSize());
 		tempBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		tempBuffer.putShort(segment);
 		tempBuffer.putShort(offset);

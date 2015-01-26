@@ -6,6 +6,7 @@ import by.ostis.common.sctpclient.exception.TransportException;
 import by.ostis.common.sctpclient.model.DefaultRequestBuilder;
 import by.ostis.common.sctpclient.model.RequestBuilder;
 import by.ostis.common.sctpclient.model.ScAddress;
+import by.ostis.common.sctpclient.model.ScArcTypeParam;
 import by.ostis.common.sctpclient.model.ScElemTypeParam;
 import by.ostis.common.sctpclient.model.ScString;
 import by.ostis.common.sctpclient.model.request.RequestHeaderType;
@@ -118,8 +119,16 @@ public class SctpClientImpl implements SctpClient {
 	@Override
 	public SctpResponse createScArc(final ScArcType type,
 			final ScAddress begAddress, final ScAddress endAddress) {
-		// TODO need to implement
-		return null;
+		SctpResponse response = new SctpResponse();
+		try {
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.CREATE_SC_ARC,
+							new ScArcTypeParam(type), begAddress, endAddress));
+		} catch (TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
 	}
 
 	@Override
@@ -128,7 +137,8 @@ public class SctpClientImpl implements SctpClient {
 		try {
 			// TODO need to test
 			response = this.sender.sendRequest(this.requestBuilder
-					.buildRequest(RequestHeaderType.CREATE_SC_ARC, arcAddress));
+					.buildRequest(RequestHeaderType.FIND_ARC_BEGIN_AND_END,
+							arcAddress));
 		} catch (final TransportException e) {
 			// TODO handle exception
 			e.printStackTrace();

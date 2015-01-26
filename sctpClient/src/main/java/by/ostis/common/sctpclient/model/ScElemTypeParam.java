@@ -1,5 +1,7 @@
 package by.ostis.common.sctpclient.model;
 
+import java.nio.ByteBuffer;
+
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
 
 public class ScElemTypeParam implements ScParameter {
@@ -11,8 +13,10 @@ public class ScElemTypeParam implements ScParameter {
 
 	@Override
 	public byte[] getBytes() {
-		// TODO need to implement
-		return null;
+		ByteBuffer buffer = ByteBuffer
+				.allocate(ScElementType.SC_ELEMENT_BYTE_SIZE);
+		buffer.putShort(type.getValue());
+		return buffer.array();
 	}
 
 	@Override

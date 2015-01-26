@@ -6,7 +6,7 @@ import java.nio.ByteOrder;
 import by.ostis.common.sctpclient.utils.constants.ScParameterSize;
 
 public class ScString implements ScParameter {
-	
+
 	private String content;
 	private int capacity;
 

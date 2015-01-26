@@ -5,7 +5,7 @@ import by.ostis.common.sctpclient.model.ScParameter;
 public class SctpRequest {
 
 	private SctpRequestHeader header;
-	
+
 	private SctpRequestBody body;
 
 	public SctpRequestHeader getHeader() {
@@ -16,13 +16,11 @@ public class SctpRequest {
 		this.header = header;
 	}
 
-//	public List<ScParameter> getBody() {
-//		return body;
-//	}
-	
-	
-	
-	public void addParametersToBody(ScParameter ...parameters){
+	// public List<ScParameter> getBody() {
+	// return body;
+	// }
+
+	public void addParametersToBody(ScParameter... parameters) {
 		body.addParameters(parameters);
 	}
 
