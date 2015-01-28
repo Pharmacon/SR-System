@@ -10,12 +10,17 @@ import by.ostis.common.sctpclient.model.ScIterator;
 import by.ostis.common.sctpclient.model.ScIteratorFactory;
 import by.ostis.common.sctpclient.model.ScParameter;
 import by.ostis.common.sctpclient.model.ScRefContent;
+import by.ostis.common.sctpclient.model.ScArcTypeParam;
+import by.ostis.common.sctpclient.model.ScElemTypeParam;
+import by.ostis.common.sctpclient.model.ScString;
 import by.ostis.common.sctpclient.model.request.RequestHeaderType;
 import by.ostis.common.sctpclient.model.request.SctpRequest;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.transport.SctpRequestSender;
 import by.ostis.common.sctpclient.transport.SctpRequestSenderImpl;
 import by.ostis.common.sctpclient.utils.constants.IteratorType;
+import by.ostis.common.sctpclient.utils.constants.ScArcType;
+import by.ostis.common.sctpclient.utils.constants.ScElementType;
 
 public class SctpClientImpl implements SctpClient {
 
@@ -23,10 +28,10 @@ public class SctpClientImpl implements SctpClient {
 	private RequestBuilder requestBuilder = new DefaultRequestBuilder();
 
 	@Override
-	public void init(String host, int port) {
+	public void init(final String host, final int port) {
 		try {
-			sender.init(host, port);
-		} catch (InitializationException e) {
+			this.sender.init(host, port);
+		} catch (final InitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -35,23 +40,25 @@ public class SctpClientImpl implements SctpClient {
 	@Override
 	public void shutdown() {
 		try {
-			sender.shutdown();
-		} catch (ShutdownException e) {
+			this.sender.shutdown();
+		} catch (final ShutdownException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public ScRefContent getScLinkContent(ScAddress adr) {
+	@Override
+	public ScString getScLinkContent(final ScAddress adr) {
 		return null;
 	}
 
-	public SctpResponse checkElementExistence(ScAddress address) {
+	@Override
+	public SctpResponse checkElementExistence(final ScAddress address) {
 		SctpResponse response = new SctpResponse();
 		try {
-			response = sender.sendRequest(requestBuilder.buildRequest(
-					RequestHeaderType.CHECK_ELEMENT_COMMAND, address));
-		} catch (TransportException e) {
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.CHECK_ELEMENT, address));
+		} catch (final TransportException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -59,14 +66,14 @@ public class SctpClientImpl implements SctpClient {
 	}
 
 	@Override
-	public SctpResponse searchElement(ScRefContent identifier) {
+	public SctpResponse searchElement(final ScString identifier) {
 		SctpResponse response = new SctpResponse();
 		try {
 			response = sender
 					.sendRequest(requestBuilder.buildRequest(
 							RequestHeaderType.SEARCH_ELEMENT_BY_IDENTIFIER,
 							identifier));
-		} catch (TransportException e) {
+		} catch (final TransportException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -89,4 +96,121 @@ public class SctpClientImpl implements SctpClient {
 		return null;
 	}
 
+	public SctpResponse deleteElement(final ScAddress address) {
+		SctpResponse response = new SctpResponse();
+		try {
+			// TODO need to test
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.DELETE_ELEMENT, address));
+		} catch (final TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	@Override
+	public SctpResponse createElement(final ScElementType type) {
+		SctpResponse response = new SctpResponse();
+		try {
+			// TODO need to test
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.CREATE_ELEMENT,
+							new ScElemTypeParam(type)));
+		} catch (final TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	@Override
+	public SctpResponse createScLink() {
+		SctpResponse response = new SctpResponse();
+		try {
+			// TODO need to test
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.CREATE_SC_LINK));
+		} catch (final TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	@Override
+	public SctpResponse createScArc(final ScArcType type,
+			final ScAddress begAddress, final ScAddress endAddress) {
+		SctpResponse response = new SctpResponse();
+		try {
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.CREATE_SC_ARC,
+							new ScArcTypeParam(type), begAddress, endAddress));
+		} catch (TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	@Override
+	public SctpResponse getArcBeginAndEnd(final ScAddress arcAddress) {
+		SctpResponse response = new SctpResponse();
+		try {
+			// TODO need to test
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.FIND_ARC_BEGIN_AND_END,
+							arcAddress));
+		} catch (final TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	@Override
+	public SctpResponse searchScLinks(final ScString content) {
+		SctpResponse response = new SctpResponse();
+		try {
+			// TODO need to test
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.SEARCH_SC_LINKS, content));
+		} catch (final TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	@Override
+	public SctpResponse setScRefContent(final ScAddress address,
+			final ScString content) {
+		SctpResponse response = new SctpResponse();
+		try {
+			// TODO need to test
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.SET_SC_LINK_CONTENT,
+							address, content));
+		} catch (final TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	@Override
+	public SctpResponse setSystemIdentifier(final ScAddress address,
+			final ScString identifier) {
+		SctpResponse response = new SctpResponse();
+		try {
+			// TODO need to test
+			response = this.sender.sendRequest(this.requestBuilder
+					.buildRequest(RequestHeaderType.SET_SYSIDTF, address,
+							identifier));
+		} catch (final TransportException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+		return response;
+	}
 }

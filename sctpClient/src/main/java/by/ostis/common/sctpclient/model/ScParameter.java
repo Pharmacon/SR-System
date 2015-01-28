@@ -5,4 +5,5 @@ public interface ScParameter {
 	public byte[] getBytes();
 	
 	public int getByteSize();
+
 }

@@ -23,6 +23,8 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	
 	private SctpResponseBuilder responseBuilder;
 	
+	private RespBodyBuilderProvider respBodyBuilder;
+
 	private Logger logger = LogManager.getLogger(SctpRequestSender.class);
 
 	public SctpRequestSenderImpl() {
@@ -31,7 +33,7 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public void init(String host, int port) throws InitializationException{
+	public void init(String host, int port) throws InitializationException {
 		try {
 			socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
@@ -43,7 +45,7 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public void shutdown() throws ShutdownException{
+	public void shutdown() throws ShutdownException {
 		try {
 			closeResources();
 		} catch (IOException e) {
@@ -59,7 +61,8 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public SctpResponse sendRequest(SctpRequest request) throws TransportException{
+	public SctpResponse sendRequest(SctpRequest request)
+			throws TransportException {
 		try {
 			byte[] data = SctpRequestBytesBuilder.build(request);
 			outputStream.write(data);
@@ -70,4 +73,83 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 		return responseBuilder.build(inputStream);
 	}
 	
+
+	private SctpResponse getResponse() throws TransportException {
+		SctpResponse response = new SctpResponse();
+		SctpResponseHeader header = new SctpResponseHeader();
+		try {
+
+			byte code;
+			code = (byte) inputStream.read();
+			header.setCommandType(SctpCommandType.getByCode(code));
+
+			byte[] bytes = getBytesFromResp(ID_BYTE_SIZE);
+			int commandId = getIntFromBytes(bytes);
+			header.setCommandId(commandId);
+
+			byte result = bytes[RESULT_TYPE_CODE_SIZE];
+			header.setResultType(SctpResultType.getByCode(result));
+
+			bytes = getBytesFromResp(SIZE_BYTE_SIZE);
+			int argumentSize = getIntFromBytes(bytes);
+			header.setArgumentSize(argumentSize);
+
+			response.setHeader(header);
+
+			SctpCommandType commandType = header.getCommandType();
+
+			byte[] parameterBytes = getBytesFromResp(header.getArgumentSize());
+
+			RespBodyBuilder bodyBuider = respBodyBuilder.create(commandType);
+			response.setBody(bodyBuider.getBody(parameterBytes, header));
+
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			throw new TransportException(ErrorMessage.RESPONSE_READ_ERROR);
+		}
+		return response;
+	}
+
+	private byte[] getRequestBytes(SctpRequest request) {
+		byte[] bodyByteArray = parseRequestBody(request.getBody());
+		byte[] headerByteArray = parseRequestHeader(request.getHeader());
+		ByteBuffer resultBuffer = ByteBuffer.allocate(bodyByteArray.length
+				+ headerByteArray.length);
+		resultBuffer.put(headerByteArray);
+		resultBuffer.put(bodyByteArray);
+		return resultBuffer.array();
+	}
+
+	private byte[] parseRequestHeader(SctpRequestHeader requestHeader) {
+		ByteBuffer tempBuffer = ByteBuffer.allocate(ScParameterSize.SC_HEADER
+				.getSize());
+		tempBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		tempBuffer.put(requestHeader.getCommandType().getValue());
+		tempBuffer.put(requestHeader.getFlag());
+		tempBuffer.putInt(requestHeader.getCommandId());
+		tempBuffer.putInt(requestHeader.getArgumentSize());
+		return tempBuffer.array();
+	}
+
+	private byte[] parseRequestBody(SctpRequestBody requestBody) {
+		ByteBuffer tempBuffer = ByteBuffer
+				.allocate(requestBody.getByteLenght());
+		List<ScParameter> parameterList = requestBody.getParameterList();
+		for (ScParameter parameter : parameterList) {
+			tempBuffer.put(parameter.getBytes());
+		}
+		return tempBuffer.array();
+	}
+
+	private byte[] getBytesFromResp(int count) throws IOException {
+		byte[] result = new byte[count];
+		inputStream.read(result);
+		return result;
+	}
+
+	private int getIntFromBytes(byte[] bytes) {
+		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		return byteBuffer.getInt();
+	}
 }

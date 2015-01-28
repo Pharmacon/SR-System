@@ -18,32 +18,33 @@ public abstract class ByteBufferWrapper {
 	}
 
 	public ByteBufferWrapper put(byte b) {
-		//TODO claculate size;
+		// TODO claculate size;
 		currentBuffer.put(b);
-;		return this;
+		;
+		return this;
 	}
 
-	public ByteBufferWrapper put(short s){
-		//TODO claculate size;
+	public ByteBufferWrapper put(short s) {
+		// TODO claculate size;
 		currentBuffer.putShort(s);
 		return this;
 	}
 
-	public ByteBufferWrapper put(int i){
-		//TODO claculate size;
+	public ByteBufferWrapper put(int i) {
+		// TODO claculate size;
 		currentBuffer.putInt(i);
 		return this;
 	}
 
-	public ByteBufferWrapper put(long l){
-		//TODO claculate size;
+	public ByteBufferWrapper put(long l) {
+		// TODO claculate size;
 		currentBuffer.putLong(l);
 		return this;
 	}
-	
-	public ByteBufferWrapper putString(String string){
+
+	public ByteBufferWrapper putString(String string) {
 		byte[] stringAsBytes = string.getBytes();
-		//TODO claculate size;
+		// TODO claculate size;
 		currentBuffer.put(stringAsBytes);
 		return this;
 	}
