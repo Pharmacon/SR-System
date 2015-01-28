@@ -47,7 +47,7 @@ public class ScAddress implements ScParameter{
 	}
 
 	@Override
-	public int getSize() {
+	public int getByteSize() {
 		return ScParameterSize.SC_ADDRESS.getSize();
 	}
 }

@@ -41,7 +41,7 @@ public class ScRefContent implements ScParameter {
 	}
 
 	@Override
-	public int getSize() {
+	public int getByteSize() {
 		return capacity;
 	}
 

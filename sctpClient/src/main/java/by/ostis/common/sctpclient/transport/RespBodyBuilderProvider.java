@@ -43,7 +43,7 @@ final class RespBodyBuilderProvider {
 			SctpResultType resultType = responseHeader.getResultType();
 			if (resultType.equals(SctpResultType.SCTP_RESULT_OK)) {
 				byte[] elementCode = Arrays.copyOf(bytes,
-						ScElementType.SC_ELEMENT_BYTE_SIZE);
+						ScElementType.SC_ELEMENT_TYPE_BYTE_SIZE);
 				short code = ByteBuffer.wrap(elementCode)
 						.order(ByteOrder.LITTLE_ENDIAN).getShort();
 				for (ScElementType elementType : ScElementType.values()) {

@@ -25,7 +25,7 @@ public class SctpRequest {
 	public void addParametersToBody(ScParameter ...parameters){
 		body.addParameters(parameters);
 	}
-
+	
 	public SctpRequestBody getBody() {
 		return body;
 	}
