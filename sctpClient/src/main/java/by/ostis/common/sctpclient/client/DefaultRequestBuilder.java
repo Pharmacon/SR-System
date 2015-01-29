@@ -8,19 +8,18 @@ import by.ostis.common.sctpclient.model.request.SctpRequestHeader;
 
 public class DefaultRequestBuilder implements RequestBuilder {
 
-	@Override
-	public SctpRequest buildRequest(RequestHeaderType headerType,
-			ScParameter... parameters) {
+    @Override
+    public SctpRequest buildRequest(RequestHeaderType headerType, ScParameter... parameters) {
 
-		SctpRequest newRequest = new SctpRequest();
-		SctpRequestBody requestBody = new SctpRequestBody();
-		requestBody.addParameters(parameters);
-		SctpRequestHeader requestHeader = headerType.getRequestHeader();
-		requestHeader.setArgumentSize(requestBody.getByteLenght());
-		newRequest.setHeader(requestHeader);
-		newRequest.setBody(requestBody);
+	SctpRequest newRequest = new SctpRequest();
+	SctpRequestBody requestBody = new SctpRequestBody();
+	requestBody.addParameters(parameters);
+	SctpRequestHeader requestHeader = headerType.getRequestHeader();
+	requestHeader.setArgumentSize(requestBody.getByteLenght());
+	newRequest.setHeader(requestHeader);
+	newRequest.setBody(requestBody);
 
-		return newRequest;
-	}
+	return newRequest;
+    }
 
 }

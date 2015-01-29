@@ -6,7 +6,7 @@ import java.nio.ByteOrder;
 import by.ostis.common.sctpclient.model.ScParameter;
 
 public enum ScElementType implements ScParameter{
-	SC_TYPE_NODE(0x1), 
+    SC_TYPE_NODE(0x1), 
 	SC_TYPE_LINK(0x2), 
 	SC_TYPE_EDGE_COMMON(0x4), 
 	SC_TYPE_ARC_COMMON(0x8), 

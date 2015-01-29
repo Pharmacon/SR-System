@@ -4,9 +4,9 @@ import by.ostis.common.sctpclient.model.ScAddress;
 
 public class ScByteBuffer extends ByteBufferWrapper {
 
-	public ByteBufferWrapper putScAddress(ScAddress address) {
+    public ByteBufferWrapper putScAddress(ScAddress address) {
 
-		return this;
-	}
+	return this;
+    }
 
 }

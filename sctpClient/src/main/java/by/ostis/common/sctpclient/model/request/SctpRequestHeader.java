@@ -4,53 +4,52 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 public class SctpRequestHeader {
 
-	private SctpCommandType commandType;
-	private byte flag;
-	private int commandId;
-	private int argumentSize;
+    private SctpCommandType commandType;
+    private byte flag;
+    private int commandId;
+    private int argumentSize;
 
-	public SctpRequestHeader() {
-	}
+    public SctpRequestHeader() {
+    }
 
-	public SctpCommandType getCommandType() {
-		return commandType;
-	}
+    public SctpCommandType getCommandType() {
+	return commandType;
+    }
 
-	public void setCommandType(SctpCommandType commandType) {
-		this.commandType = commandType;
-	}
+    public void setCommandType(SctpCommandType commandType) {
+	this.commandType = commandType;
+    }
 
-	public byte getFlag() {
-		return flag;
-	}
+    public byte getFlag() {
+	return flag;
+    }
 
-	public void setFlag(byte flag) {
-		this.flag = flag;
-	}
+    public void setFlag(byte flag) {
+	this.flag = flag;
+    }
 
-	public int getCommandId() {
-		return commandId;
-	}
+    public int getCommandId() {
+	return commandId;
+    }
 
-	public void setCommandId(int commandId) {
-		this.commandId = commandId;
-	}
+    public void setCommandId(int commandId) {
+	this.commandId = commandId;
+    }
 
-	public int getArgumentSize() {
-		return argumentSize;
-	}
+    public int getArgumentSize() {
+	return argumentSize;
+    }
 
-	public void setArgumentSize(int argumentSize) {
-		this.argumentSize = argumentSize;
-	}
+    public void setArgumentSize(int argumentSize) {
+	this.argumentSize = argumentSize;
+    }
 
-	public SctpRequestHeader(SctpCommandType commandType, byte flag,
-			int commandId, int argumentSize) {
+    public SctpRequestHeader(SctpCommandType commandType, byte flag, int commandId, int argumentSize) {
 
-		this.commandType = commandType;
-		this.flag = flag;
-		this.commandId = commandId;
-		this.argumentSize = argumentSize;
-	}
+	this.commandType = commandType;
+	this.flag = flag;
+	this.commandId = commandId;
+	this.argumentSize = argumentSize;
+    }
 
 }

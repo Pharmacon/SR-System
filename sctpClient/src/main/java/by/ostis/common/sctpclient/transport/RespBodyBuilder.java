@@ -6,5 +6,5 @@ import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 
 interface RespBodyBuilder {
 
-	List<Object> getBody(byte[] bytes, SctpResponseHeader responseHeader);
+    List<Object> getBody(byte[] bytes, SctpResponseHeader responseHeader);
 }

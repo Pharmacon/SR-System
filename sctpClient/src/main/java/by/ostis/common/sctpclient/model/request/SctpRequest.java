@@ -4,35 +4,35 @@ import by.ostis.common.sctpclient.model.ScParameter;
 
 public class SctpRequest {
 
-	private SctpRequestHeader header;
+    private SctpRequestHeader header;
 
-	private SctpRequestBody body;
+    private SctpRequestBody body;
 
-	public SctpRequestHeader getHeader() {
-		return header;
-	}
+    public SctpRequestHeader getHeader() {
+	return header;
+    }
 
-	public void setHeader(SctpRequestHeader header) {
-		this.header = header;
-	}
+    public void setHeader(SctpRequestHeader header) {
+	this.header = header;
+    }
 
-	// public List<ScParameter> getBody() {
-	// return body;
-	// }
+    // public List<ScParameter> getBody() {
+    // return body;
+    // }
 
-	public void addParametersToBody(ScParameter... parameters) {
-		body.addParameters(parameters);
-	}
-	
-	public SctpRequestBody getBody() {
-		return body;
-	}
+    public void addParametersToBody(ScParameter... parameters) {
+	body.addParameters(parameters);
+    }
 
-	public void setBody(SctpRequestBody body) {
-		this.body = body;
-	}
+    public SctpRequestBody getBody() {
+	return body;
+    }
 
-	public void addParameterToBody(ScParameter parameter) {
-		body.addParameter(parameter);
-	}
+    public void setBody(SctpRequestBody body) {
+	this.body = body;
+    }
+
+    public void addParameterToBody(ScParameter parameter) {
+	body.addParameter(parameter);
+    }
 }
