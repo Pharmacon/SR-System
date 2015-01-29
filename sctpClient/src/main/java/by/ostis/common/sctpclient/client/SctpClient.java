@@ -7,7 +7,6 @@ import by.ostis.common.sctpclient.model.ScParameter;
 import by.ostis.common.sctpclient.model.ScString;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.utils.constants.ScIteratorType;
-import by.ostis.common.sctpclient.utils.constants.ScArcType;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
 
 public interface SctpClient {
@@ -30,7 +29,7 @@ public interface SctpClient {
 
     public SctpResponse createScLink();
 
-    public SctpResponse createScArc(ScArcType type, ScAddress begAddress, ScAddress endAddress);
+    public SctpResponse createScArc(ScElementType type, ScAddress begAddress, ScAddress endAddress);
 
     public SctpResponse getArcBeginAndEnd(ScAddress arcAddress);
 

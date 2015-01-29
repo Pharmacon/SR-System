@@ -6,8 +6,6 @@ import by.ostis.common.sctpclient.exception.InitializationException;
 import by.ostis.common.sctpclient.exception.ShutdownException;
 import by.ostis.common.sctpclient.exception.TransportException;
 import by.ostis.common.sctpclient.model.ScAddress;
-import by.ostis.common.sctpclient.model.ScArcTypeParam;
-import by.ostis.common.sctpclient.model.ScElemTypeParam;
 import by.ostis.common.sctpclient.model.ScIterator;
 import by.ostis.common.sctpclient.model.ScIteratorFactory;
 import by.ostis.common.sctpclient.model.ScParameter;
@@ -17,7 +15,6 @@ import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.transport.SctpRequestSender;
 import by.ostis.common.sctpclient.transport.SctpRequestSenderImpl;
 import by.ostis.common.sctpclient.utils.constants.ScIteratorType;
-import by.ostis.common.sctpclient.utils.constants.ScArcType;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
 
 public class SctpClientImpl implements SctpClient {
@@ -109,8 +106,7 @@ public class SctpClientImpl implements SctpClient {
 	SctpResponse response = new SctpResponse();
 	try {
 	    // TODO need to test
-	    response = this.sender.sendRequest(this.requestBuilder.buildRequest(RequestHeaderType.CREATE_ELEMENT,
-		    new ScElemTypeParam(type)));
+	    response = this.sender.sendRequest(this.requestBuilder.buildRequest(RequestHeaderType.CREATE_ELEMENT,type));
 	} catch (final TransportException e) {
 	    // TODO handle exception
 	    e.printStackTrace();
@@ -132,11 +128,11 @@ public class SctpClientImpl implements SctpClient {
     }
 
     @Override
-    public SctpResponse createScArc(final ScArcType type, final ScAddress begAddress, final ScAddress endAddress) {
+    public SctpResponse createScArc(final ScElementType type, final ScAddress begAddress, final ScAddress endAddress) {
 	SctpResponse response = new SctpResponse();
 	try {
 	    response = this.sender.sendRequest(this.requestBuilder.buildRequest(RequestHeaderType.CREATE_SC_ARC,
-		    new ScArcTypeParam(type), begAddress, endAddress));
+		    type, begAddress, endAddress));
 	} catch (TransportException e) {
 	    // TODO handle exception
 	    e.printStackTrace();
