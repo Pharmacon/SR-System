@@ -157,33 +157,33 @@ final class RespBodyBuilderProvider {
     public RespBodyBuilder create(final SctpCommandType command) {
 
 	switch (command) {
-	case CHECK_ELEMENT_CMD:
+	case CHECK_ELEMENT_COMMAND:
 	    return new EmptyResponseBodyBuider();
-	case GET_ELEMENT_TYPE_CMD:
+	case GET_ELEMENT_TYPE_COMMAND:
 	    return new ElementTypeBuilder();
-	case ERASE_ELEMENT_CMD:
+	case ERASE_ELEMENT_COMMAND:
 	    return new EmptyResponseBodyBuider();
-	case CREATE_NODE_CMD:
+	case CREATE_NODE_COMMAND:
 	    return new AddressWhenSuccessBuilder();
-	case CREATE_LINK_CMD:
+	case CREATE_LINK_COMMAND:
 	    return new AddressWhenSuccessBuilder();
-	case CREATE_ARC_CMD:
+	case CREATE_ARC_COMMAND:
 	    return new AddressWhenSuccessBuilder();
-	case GET_ARC_CMD:
+	case GET_ARC_COMMAND:
 	    return new GetArcBuilder();
-	case GET_LINK_CONTENT_CMD:
+	case GET_LINK_CONTENT_COMMAND:
 	    return new LinkContentBuilder();
-	case FIND_LINKS_CMD:
+	case FIND_LINKS_COMMAND:
 	    return new FindLinksBuilder();
-	case SET_LINK_CONTENT_CMD:
+	case SET_LINK_CONTENT_COMMAND:
 	    return new EmptyResponseBodyBuider();
-	case EVENT_CREATE_CMD:
+	case EVENT_CREATE_COMMAND:
 	    return new IdWhenSuccessBuilder();
-	case EVENT_DESTROY_CMD:
+	case EVENT_DESTROY_COMMAND:
 	    return new IdWhenSuccessBuilder();
-	case FIND_ELEMENT_BY_SYSIDTF_CMD:
+	case FIND_ELEMENT_BY_SYSIDTF_COMMAND:
 	    return new AddressWhenSuccessBuilder();
-	case SET_SYSIDTF_CMD:
+	case SET_SYSIDTF_COMMAND:
 	    return new EmptyResponseBodyBuider();
 	default:
 	    // TODO: 0x02 Ask ElementTypes and add to ScElementType enum

@@ -4,17 +4,17 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 public enum RequestHeaderType {
 
-    CHECK_ELEMENT(SctpCommandType.CHECK_ELEMENT_CMD, (byte) 0, 0), DELETE_ELEMENT(
-	    SctpCommandType.ERASE_ELEMENT_CMD, (byte) 0, 0), SEARCH_ELEMENT_BY_IDENTIFIER(
-	    SctpCommandType.FIND_ELEMENT_BY_SYSIDTF_CMD, (byte) 0, 0), CREATE_ELEMENT(
-	    SctpCommandType.CREATE_NODE_CMD, (byte) 0, 0), CREATE_SC_LINK(
-	    SctpCommandType.CREATE_LINK_CMD, (byte) 0, 0), CREATE_SC_ARC(
-	    SctpCommandType.CREATE_ARC_CMD, (byte) 0, 0), SEARCH_SC_LINKS(
-	    SctpCommandType.FIND_LINKS_CMD, (byte) 0, 0), SET_SC_LINK_CONTENT(
-	    SctpCommandType.SET_LINK_CONTENT_CMD, (byte) 0, 0), SET_SYSIDTF(
-	    SctpCommandType.SET_SYSIDTF_CMD, (byte) 0, 0), FIND_ARC_BEGIN_AND_END(
-	    SctpCommandType.GET_ARC_CMD, (byte) 0, 0), ITERATOR_SEARCH(
-	    SctpCommandType.ITERATE_ELEMENTS_CMD, (byte) 0, 0);
+    CHECK_ELEMENT(SctpCommandType.CHECK_ELEMENT_COMMAND, (byte) 0, 0), DELETE_ELEMENT(
+	    SctpCommandType.ERASE_ELEMENT_COMMAND, (byte) 0, 0), SEARCH_ELEMENT_BY_IDENTIFIER(
+	    SctpCommandType.FIND_ELEMENT_BY_SYSIDTF_COMMAND, (byte) 0, 0), CREATE_ELEMENT(
+	    SctpCommandType.CREATE_NODE_COMMAND, (byte) 0, 0), CREATE_SC_LINK(
+	    SctpCommandType.CREATE_LINK_COMMAND, (byte) 0, 0), CREATE_SC_ARC(
+	    SctpCommandType.CREATE_ARC_COMMAND, (byte) 0, 0), SEARCH_SC_LINKS(
+	    SctpCommandType.FIND_LINKS_COMMAND, (byte) 0, 0), SET_SC_LINK_CONTENT(
+	    SctpCommandType.SET_LINK_CONTENT_COMMAND, (byte) 0, 0), SET_SYSIDTF(
+	    SctpCommandType.SET_SYSIDTF_COMMAND, (byte) 0, 0), FIND_ARC_BEGIN_AND_END(
+	    SctpCommandType.GET_ARC_COMMAND, (byte) 0, 0), ITERATOR_SEARCH(
+	    SctpCommandType.ITERATE_ELEMENTS_COMMAND, (byte) 0, 0);
 
     private SctpCommandType commandType;
 

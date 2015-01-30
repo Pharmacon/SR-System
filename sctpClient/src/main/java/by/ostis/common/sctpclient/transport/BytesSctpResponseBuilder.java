@@ -44,7 +44,7 @@ class BytesSctpResponseBuilder implements SctpResponseBuilder {
 	    int commandId = getIntFromBytes(bytes);
 	    header.setCommandId(commandId);
 
-	    byte result = bytes[RESULT_TYPE_CODE_SIZE];
+	    byte result = (byte)source.read();
 	    header.setResultType(SctpResultType.getByCode(result));
 
 	    bytes = getBytesFromResp(source, SIZE_BYTE_SIZE);
