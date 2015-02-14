@@ -8,7 +8,6 @@ import by.ostis.common.sctpclient.utils.constants.ScParameterSize;
 public class ScString implements ScParameter {
 
     private String content;
-    private int capacity;
 
     public String getContent() {
 	return content;
@@ -18,12 +17,7 @@ public class ScString implements ScParameter {
 	this.content = content;
     }
 
-    public void setCapacity(int capacity) {
-	this.capacity = capacity;
-    }
-
-    public ScString(int capacity, String content) {
-	this.capacity = capacity;
+    public ScString(String content) {
 	this.content = content;
     }
 
@@ -31,6 +25,7 @@ public class ScString implements ScParameter {
     public byte[] getBytes() {
 	ByteBuffer capacityBuffer = ByteBuffer.allocate(ScParameterSize.SC_CAPACITY.getSize());
 	capacityBuffer.order(ByteOrder.LITTLE_ENDIAN);
+	int capacity = content.getBytes().length;
 	capacityBuffer.putInt(capacity);
 	ByteBuffer generalBuffer = ByteBuffer.allocate(ScParameterSize.SC_CAPACITY.getSize() + capacity);
 	generalBuffer.put(capacityBuffer.array());
@@ -40,7 +35,7 @@ public class ScString implements ScParameter {
 
     @Override
     public int getByteSize() {
-	return capacity;
+	return content.getBytes().length;
     }
 
 }

@@ -143,7 +143,7 @@ final class RespBodyBuilderProvider {
 	@Override
 	public List<Object> getBody(final byte[] bytes, final SctpResponseHeader responseHeader) {
 	    final List<Object> list = new ArrayList<Object>();
-	    final ScString content = new ScString(bytes.length, new String(bytes));
+	    final ScString content = new ScString(new String(bytes));
 	    list.add(content);
 	    return list;
 	}
