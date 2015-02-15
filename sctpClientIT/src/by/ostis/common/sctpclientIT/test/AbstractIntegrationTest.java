@@ -1,27 +1,37 @@
 package by.ostis.common.sctpclientIT.test;
 
+/**
+ * @author Andrew Nepogoda Feb 15, 2015
+ */
 public abstract class AbstractIntegrationTest implements IntegrationTest {
-	private int testNumber;
-	private String state = "not run";
 
-	public int getTestNumber() {
-		return this.testNumber;
-	}
+    private String testName;
 
-	public AbstractIntegrationTest(final int number) {
-		this.testNumber = number;
-	}
+    public String getTestName() {
 
-	public String getState() {
-		return this.state;
-	}
+        return testName;
+    }
 
-	public void setState(final String state) {
-		this.state = state;
-	}
+    private String state = "not run";
 
-	@Override
-	public String toString() {
-		return "Test number: " + this.testNumber + "State: " + this.state;
-	}
+    public AbstractIntegrationTest(final String testName) {
+
+        this.testName = testName;
+    }
+
+    public String getState() {
+
+        return this.state;
+    }
+
+    public void setState(final String state) {
+
+        this.state = state;
+    }
+
+    @Override
+    public String toString() {
+
+        return "Test : " + this.testName + "State: " + this.state;
+    }
 }
