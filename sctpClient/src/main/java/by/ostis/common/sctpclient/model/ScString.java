@@ -37,5 +37,7 @@ public class ScString implements ScParameter {
     public int getByteSize() {
 	return content.getBytes().length;
     }
-
+    public String toString(){
+        return content;
+    }
 }

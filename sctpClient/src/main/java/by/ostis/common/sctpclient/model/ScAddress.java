@@ -49,4 +49,7 @@ public class ScAddress implements ScParameter {
     public int getByteSize() {
 	return ScParameterSize.SC_ADDRESS.getSize();
     }
+    public String toString(){
+        return "segment:"+this.segment+" offset:"+this.offset;
+    }
 }
