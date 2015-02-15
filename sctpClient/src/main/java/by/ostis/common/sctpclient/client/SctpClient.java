@@ -15,7 +15,7 @@ public interface SctpClient {
 
     public void shutdown();
 
-    public ScString getScLinkContent(ScAddress address);
+    public SctpResponse getScLinkContent(ScAddress address);
 
     public SctpResponse checkElementExistence(ScAddress address);
 
