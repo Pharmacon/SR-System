@@ -5,8 +5,8 @@ import java.io.InputStream;
 import by.ostis.common.sctpclient.exception.TransportException;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 
-interface SctpResponseBuilder {
+interface SctpResponseBuilder<T> {
 
-    SctpResponse build(InputStream source) throws TransportException;
+    SctpResponse<T> build(InputStream source) throws TransportException;
 
 }

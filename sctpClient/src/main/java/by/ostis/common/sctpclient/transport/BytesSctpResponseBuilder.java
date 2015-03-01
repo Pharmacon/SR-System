@@ -15,68 +15,72 @@ import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 import by.ostis.common.sctpclient.model.response.SctpResultType;
 import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
-class BytesSctpResponseBuilder implements SctpResponseBuilder {
+class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
 
-    private static final int ID_BYTE_SIZE = 4;
-    private static final int RESULT_TYPE_CODE_SIZE = 1;
-    private static final int SIZE_BYTE_SIZE = 4;
+	private static final int ID_BYTE_SIZE = 4;
+	private static final int RESULT_TYPE_CODE_SIZE = 1;
+	private static final int SIZE_BYTE_SIZE = 4;
 
-    private RespBodyBuilderProvider respBodyProvider;
-    private Logger logger = LogManager.getLogger(BytesSctpResponseBuilder.class);
+	private RespBodyBuilderProvider respBodyProvider;
+	private Logger logger = LogManager
+			.getLogger(BytesSctpResponseBuilder.class);
 
-    public BytesSctpResponseBuilder() {
-	super();
-	respBodyProvider = new RespBodyBuilderProvider();
-    }
-
-    @Override
-    public SctpResponse build(InputStream source) throws TransportException {
-
-	SctpResponse response = new SctpResponse();
-	SctpResponseHeader header = new SctpResponseHeader();
-	try {
-
-	    byte code;
-	    code = (byte) source.read();
-	    header.setCommandType(SctpCommandType.getByCode(code));
-
-	    byte[] bytes = getBytesFromResp(source, ID_BYTE_SIZE);
-	    int commandId = getIntFromBytes(bytes);
-	    header.setCommandId(commandId);
-
-	    byte result = (byte)source.read();
-	    header.setResultType(SctpResultType.getByCode(result));
-
-	    bytes = getBytesFromResp(source, SIZE_BYTE_SIZE);
-	    int argumentSize = getIntFromBytes(bytes);
-	    header.setArgumentSize(argumentSize);
-
-	    response.setHeader(header);
-
-	    SctpCommandType commandType = header.getCommandType();
-
-	    byte[] parameterBytes = getBytesFromResp(source, header.getArgumentSize());
-
-	    RespBodyBuilder bodyBuider = respBodyProvider.create(commandType);
-	    response.setBody(bodyBuider.getBody(parameterBytes, header));
-
-	} catch (IOException e) {
-	    logger.error(e.getMessage());
-	    throw new TransportException(ErrorMessage.RESPONSE_READ_ERROR);
+	public BytesSctpResponseBuilder() {
+		super();
+		respBodyProvider = new RespBodyBuilderProvider();
 	}
-	return response;
-    }
 
-    private byte[] getBytesFromResp(InputStream source, int count) throws IOException {
-	byte[] result = new byte[count];
-	source.read(result);
-	return result;
-    }
+	@Override
+	public SctpResponse build(InputStream source) throws TransportException {
 
-    private int getIntFromBytes(byte[] bytes) {
-	ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-	byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-	return byteBuffer.getInt();
-    }
+		SctpResponse<T> response = new SctpResponse<T>();
+		SctpResponseHeader header = new SctpResponseHeader();
+		try {
+
+			byte code;
+			code = (byte) source.read();
+			header.setCommandType(SctpCommandType.getByCode(code));
+
+			byte[] bytes = getBytesFromResp(source, ID_BYTE_SIZE);
+			int commandId = getIntFromBytes(bytes);
+			header.setCommandId(commandId);
+
+			byte result = (byte) source.read();
+			header.setResultType(SctpResultType.getByCode(result));
+
+			bytes = getBytesFromResp(source, SIZE_BYTE_SIZE);
+			int argumentSize = getIntFromBytes(bytes);
+			header.setArgumentSize(argumentSize);
+
+			response.setHeader(header);
+
+			SctpCommandType commandType = header.getCommandType();
+
+			byte[] parameterBytes = getBytesFromResp(source,
+					header.getArgumentSize());
+
+			RespBodyBuilder<T> bodyBuider = respBodyProvider.create(commandType);
+			T answer=bodyBuider.getAnswer(parameterBytes, header);
+			response.setAnswer(answer);
+
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			throw new TransportException(ErrorMessage.RESPONSE_READ_ERROR);
+		}
+		return response;
+	}
+
+	private byte[] getBytesFromResp(InputStream source, int count)
+			throws IOException {
+		byte[] result = new byte[count];
+		source.read(result);
+		return result;
+	}
+
+	private int getIntFromBytes(byte[] bytes) {
+		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		return byteBuffer.getInt();
+	}
 
 }

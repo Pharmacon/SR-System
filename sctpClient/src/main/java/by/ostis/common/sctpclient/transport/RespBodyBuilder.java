@@ -1,10 +1,8 @@
 package by.ostis.common.sctpclient.transport;
 
-import java.util.List;
-
 import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 
-interface RespBodyBuilder {
+interface RespBodyBuilder<T> {
 
-    List<Object> getBody(byte[] bytes, SctpResponseHeader responseHeader);
+    T getAnswer(byte[] bytes, SctpResponseHeader responseHeader);
 }

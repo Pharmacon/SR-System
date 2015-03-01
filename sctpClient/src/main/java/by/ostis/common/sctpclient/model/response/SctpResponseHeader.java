@@ -50,4 +50,39 @@ public class SctpResponseHeader {
 		+ ", resultType=" + resultType.name() + ", argumentSize=" + argumentSize + "]";
     }
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + argumentSize;
+		result = prime * result + commandId;
+		result = prime * result
+				+ ((commandType == null) ? 0 : commandType.hashCode());
+		result = prime * result
+				+ ((resultType == null) ? 0 : resultType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SctpResponseHeader other = (SctpResponseHeader) obj;
+		if (argumentSize != other.argumentSize)
+			return false;
+		if (commandId != other.commandId)
+			return false;
+		if (commandType != other.commandType)
+			return false;
+		if (resultType != other.resultType)
+			return false;
+		return true;
+	}
+    
+    
+
 }
