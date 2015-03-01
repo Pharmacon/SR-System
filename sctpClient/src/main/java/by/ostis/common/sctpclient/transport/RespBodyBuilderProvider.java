@@ -151,8 +151,7 @@ final class RespBodyBuilderProvider {
 
 	}
 
-	RespBodyBuilderProvider() {
-	}
+
 
 	public RespBodyBuilder create(final SctpCommandType command) {
 

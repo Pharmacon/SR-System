@@ -43,8 +43,16 @@ public class SctpClientImpl implements SctpClient {
     }
 
     @Override
-    public ScString getScLinkContent(final ScAddress adr) {
-	return null;
+    public SctpResponse getScLinkContent(final ScAddress address) {
+        SctpResponse response = new SctpResponse();
+        try {
+            response = this.sender.sendRequest(this.requestBuilder.buildRequest(RequestHeaderType.GET_LINK_CONTENT,
+                    address));
+        } catch (final TransportException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return response;
     }
 
     @Override

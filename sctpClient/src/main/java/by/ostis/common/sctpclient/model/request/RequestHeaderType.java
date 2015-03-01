@@ -14,7 +14,8 @@ public enum RequestHeaderType {
 	    SctpCommandType.SET_LINK_CONTENT_COMMAND, (byte) 0, 0), SET_SYSIDTF(
 	    SctpCommandType.SET_SYSIDTF_COMMAND, (byte) 0, 0), FIND_ARC_BEGIN_AND_END(
 	    SctpCommandType.GET_ARC_COMMAND, (byte) 0, 0), ITERATOR_SEARCH(
-	    SctpCommandType.ITERATE_ELEMENTS_COMMAND, (byte) 0, 0);
+	    SctpCommandType.ITERATE_ELEMENTS_COMMAND, (byte) 0, 0),
+	    GET_LINK_CONTENT(SctpCommandType.GET_LINK_CONTENT_COMMAND,(byte) 0, 0);
 
     private SctpCommandType commandType;
 

@@ -1,0 +1,2 @@
+Add SctpClient lib to this folder and add this lib to build path;
+Commit hash on which sctp-client lib based: 2fae419a9042b396c71917943efa3d0fe4d55b29;
