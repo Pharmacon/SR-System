@@ -1,8 +1,7 @@
 package by.ostis.common.sctpclientIT.constants;
+
 /**
- * 
- * @author Andrew Nepogoda
- * Feb 15, 2015
+ * @author Andrew Nepogoda Feb 15, 2015
  */
 public enum TestMessage {
     CONNECTION_FAILED("Connection Failed"),

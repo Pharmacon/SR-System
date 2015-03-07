@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.ostis.common.sctpclientIT.constants.TestMessage;
+
 /**
- * 
- * @author Andrew Nepogoda
- * Feb 15, 2015
+ * @author Andrew Nepogoda Feb 15, 2015
  */
 public abstract class AbstractTestPackage implements TestPackage {
 
@@ -18,6 +17,7 @@ public abstract class AbstractTestPackage implements TestPackage {
     public AbstractTestPackage(final String packageName) {
 
         this.packageName = packageName;
+        setTests();
     }
 
     protected void printTestsState() {

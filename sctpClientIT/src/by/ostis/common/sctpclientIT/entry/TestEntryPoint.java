@@ -2,10 +2,9 @@ package by.ostis.common.sctpclientIT.entry;
 
 import by.ostis.common.sctpclientIT.test.TestPackage;
 import by.ostis.common.sctpclientIT.test.testpackages.DeafaultTestPackage;
+
 /**
- * 
- * @author Andrew Nepogoda
- * Feb 15, 2015
+ * @author Andrew Nepogoda Feb 15, 2015
  */
 public class TestEntryPoint {
 
