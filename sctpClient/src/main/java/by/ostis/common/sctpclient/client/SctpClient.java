@@ -7,8 +7,8 @@ import by.ostis.common.sctpclient.model.ScIterator;
 import by.ostis.common.sctpclient.model.ScParameter;
 import by.ostis.common.sctpclient.model.ScString;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
-import by.ostis.common.sctpclient.utils.constants.ScIteratorType;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
+import by.ostis.common.sctpclient.utils.constants.ScIteratorType;
 
 public interface SctpClient {
 
@@ -20,7 +20,8 @@ public interface SctpClient {
 
     public SctpResponse<Boolean> checkElementExistence(ScAddress address);
 
-    public SctpResponse<List<ScIterator>> searchByIterator(ScIteratorType iteratorType, List<ScParameter> params);
+    public SctpResponse<List<ScIterator>> searchByIterator(
+            ScIteratorType iteratorType, List<ScParameter> params);
 
     public SctpResponse<ScAddress> searchElement(ScString identifier);
 
@@ -30,15 +31,18 @@ public interface SctpClient {
 
     public SctpResponse<ScAddress> createScLink();
 
-    public SctpResponse<ScAddress> createScArc(ScElementType type, ScAddress begAddress, ScAddress endAddress);
+    public SctpResponse<ScAddress> createScArc(ScElementType type,
+            ScAddress begAddress, ScAddress endAddress);
 
     // TODO
     public SctpResponse<Void> getArcBeginAndEnd(ScAddress arcAddress);
 
     public SctpResponse<List<ScAddress>> searchScLinks(ScString content);
 
-    public SctpResponse<Boolean> setScRefContent(ScAddress address, ScString content);
+    public SctpResponse<Boolean> setScRefContent(ScAddress address,
+            ScString content);
 
-    public SctpResponse<Boolean> setSystemIdentifier(ScAddress address, ScString identifier);
+    public SctpResponse<Boolean> setSystemIdentifier(ScAddress address,
+            ScString identifier);
 
 }

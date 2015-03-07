@@ -6,14 +6,16 @@ public class SctpRequest {
 
     private SctpRequestHeader header;
 
-    private SctpRequestBody body;
+    private SctpRequestBody   body;
 
     public SctpRequestHeader getHeader() {
-	return header;
+
+        return header;
     }
 
     public void setHeader(SctpRequestHeader header) {
-	this.header = header;
+
+        this.header = header;
     }
 
     // public List<ScParameter> getBody() {
@@ -21,18 +23,22 @@ public class SctpRequest {
     // }
 
     public void addParametersToBody(ScParameter... parameters) {
-	body.addParameters(parameters);
+
+        body.addParameters(parameters);
     }
 
     public SctpRequestBody getBody() {
-	return body;
+
+        return body;
     }
 
     public void setBody(SctpRequestBody body) {
-	this.body = body;
+
+        this.body = body;
     }
 
     public void addParameterToBody(ScParameter parameter) {
-	body.addParameter(parameter);
+
+        body.addParameter(parameter);
     }
 }

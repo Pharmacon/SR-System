@@ -6,7 +6,7 @@ public class ScByteBuffer extends ByteBufferWrapper {
 
     public ByteBufferWrapper putScAddress(ScAddress address) {
 
-	return this;
+        return this;
     }
 
 }

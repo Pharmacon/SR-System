@@ -8,9 +8,10 @@ import by.ostis.common.sctpclient.model.response.SctpResponse;
 
 public interface SctpRequestSender {
 
-	void init(String host, int port) throws InitializationException;
+    void init(String host, int port) throws InitializationException;
 
-	void shutdown() throws ShutdownException;
+    void shutdown() throws ShutdownException;
 
-	<Type> SctpResponse<Type> sendRequest(SctpRequest request) throws TransportException;
+    <Type> SctpResponse<Type> sendRequest(SctpRequest request)
+            throws TransportException;
 }
