@@ -20,19 +20,18 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 final class RespBodyBuilderProvider {
 
     private class AddressWhenSuccessBuilder implements
-            RespBodyBuilder<List<ScAddress>> {
+            RespBodyBuilder<ScAddress> {
 
         @Override
-        public List<ScAddress> getAnswer(final byte[] bytes,
+        public ScAddress getAnswer(final byte[] bytes,
                 final SctpResponseHeader responseHeader) {
 
-            final List<ScAddress> list = new ArrayList<ScAddress>();
             final SctpResultType resultType = responseHeader.getResultType();
+            ScAddress scAddress = null;
             if (SctpResultType.SCTP_RESULT_OK == resultType) {
-                final ScAddress scAddress = TypeBuilder.buildScAddress(bytes);
-                list.add(scAddress);
+                scAddress = TypeBuilder.buildScAddress(bytes);
             }
-            return list;
+            return scAddress;
         }
 
     }

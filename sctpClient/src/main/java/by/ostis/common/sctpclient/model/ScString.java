@@ -1,8 +1,16 @@
 package by.ostis.common.sctpclient.model;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 public class ScString implements ScParameter {
 
     private String content;
+
+    public ScString(String content) {
+
+        this.content = content;
+    }
 
     public String getContent() {
 
@@ -17,7 +25,10 @@ public class ScString implements ScParameter {
     @Override
     public byte[] getBytes() {
 
-        return content.getBytes();
+        ByteBuffer buffer = ByteBuffer.allocate(content.length());
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put(content.getBytes());
+        return buffer.array();
     }
 
     @Override

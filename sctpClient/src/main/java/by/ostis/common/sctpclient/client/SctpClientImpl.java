@@ -76,7 +76,7 @@ public class SctpClientImpl implements SctpClient {
     @Override
     public SctpResponse<ScAddress> createElement(final ScElementType type) {
 
-        return sendRequest(SctpCommandType.CHECK_ELEMENT_COMMAND, type);
+        return sendRequest(SctpCommandType.CREATE_NODE_COMMAND, type);
     }
 
     @Override
@@ -89,8 +89,8 @@ public class SctpClientImpl implements SctpClient {
     public SctpResponse<ScAddress> createScArc(final ScElementType type,
             final ScAddress begAddress, final ScAddress endAddress) {
 
-        return sendRequest(SctpCommandType.CREATE_ARC_COMMAND, begAddress,
-                endAddress);
+        return sendRequest(SctpCommandType.CREATE_ARC_COMMAND, type,
+                begAddress, endAddress);
     }
 
     // TODO
