@@ -12,5 +12,5 @@ public interface SctpRequestSender {
 
 	void shutdown() throws ShutdownException;
 
-    SctpResponse sendRequest(SctpRequest request) throws TransportException;
+	<Type> SctpResponse<Type> sendRequest(SctpRequest request) throws TransportException;
 }

@@ -1,5 +1,6 @@
 package by.ostis.common.sctpclient.transport;
 
+import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import by.ostis.common.sctpclient.model.ScAddress;
-import by.ostis.common.sctpclient.model.ScString;
+import by.ostis.common.sctpclient.model.ScIterator;
 import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 import by.ostis.common.sctpclient.model.response.SctpResultType;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
@@ -18,10 +19,12 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 final class RespBodyBuilderProvider {
 
-	private class AddressWhenSuccessBuilder implements RespBodyBuilder<List<ScAddress>> {
+	private class AddressWhenSuccessBuilder implements
+			RespBodyBuilder<List<ScAddress>> {
 
 		@Override
-		public List<ScAddress> getAnswer(final byte[] bytes,final SctpResponseHeader responseHeader) {
+		public List<ScAddress> getAnswer(final byte[] bytes,
+				final SctpResponseHeader responseHeader) {
 			final List<ScAddress> list = new ArrayList<ScAddress>();
 			final SctpResultType resultType = responseHeader.getResultType();
 			if (SctpResultType.SCTP_RESULT_OK == resultType) {
@@ -58,9 +61,10 @@ final class RespBodyBuilderProvider {
 	private class EmptyResponseBodyBuider implements RespBodyBuilder<Object> {
 
 		@Override
-		public Object getAnswer(final byte[] bytes,
+		public Boolean getAnswer(final byte[] bytes,
 				final SctpResponseHeader responseHeader) {
-			return null;
+			final SctpResultType resultType = responseHeader.getResultType();
+			return SctpResultType.SCTP_RESULT_OK  == resultType;
 		}
 
 	}
@@ -69,7 +73,6 @@ final class RespBodyBuilderProvider {
 
 		private static final int LINKS_NUMBER_END_INDEX = 4;
 		private static final int LINKS_NUMBER_BEGIN_INDEX = 0;
-
 		private static final int LINKS_ADDRESSES_BEGIN_INDEX = 4;
 
 		@Override
@@ -117,7 +120,8 @@ final class RespBodyBuilderProvider {
 				final SctpResponseHeader responseHeader) {
 			final List<ScAddress> list = new ArrayList<ScAddress>();
 			final ScAddress begin = TypeBuilder.buildScAddress(bytes);
-			final ScAddress end = TypeBuilder.buildScAddress(bytes,END_ADDRESS_BEGIN_INDEX);
+			final ScAddress end = TypeBuilder.buildScAddress(bytes,
+					END_ADDRESS_BEGIN_INDEX);
 			list.add(begin);
 			list.add(end);
 			return list;
@@ -134,7 +138,7 @@ final class RespBodyBuilderProvider {
 			if (SctpResultType.SCTP_RESULT_OK == resultType) {
 				final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 				byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-				return  byteBuffer.getInt();
+				return byteBuffer.getInt();
 			}
 			return null;
 		}
@@ -150,16 +154,38 @@ final class RespBodyBuilderProvider {
 		}
 
 	}
+	
+    class SctpIteratorResponseBuilder implements RespBodyBuilder<List<ScIterator>> {
 
+        private static final int INTEGER_BYTE_SIZE = 4;
 
+        @Override
+        public List<ScIterator> getAnswer(byte[] bytes, SctpResponseHeader responseHeader) {
+        	ByteArrayInputStream source = new ByteArrayInputStream(bytes);
+            final SctpResultType resultType = responseHeader.getResultType();
+            if (SctpResultType.SCTP_RESULT_OK == resultType) {
+                final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes, 0, INTEGER_BYTE_SIZE);
+                byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+                int iteratorCount = byteBuffer.getInt();
+                for (int i = 0; i < iteratorCount; ++i) {
+                    int offset = i * ScParameterSize.SC_ADDRESS.getSize();
+
+                }
+            }
+            // TODO Auto-generated method stub
+            return null;
+        }
+    }
 
 	public RespBodyBuilder create(final SctpCommandType command) {
 
 		switch (command) {
+		// TODO change return type
 		case CHECK_ELEMENT_COMMAND:
 			return new EmptyResponseBodyBuider();
 		case GET_ELEMENT_TYPE_COMMAND:
 			return new ElementTypeBuilder();
+			// TODO change return type
 		case ERASE_ELEMENT_COMMAND:
 			return new EmptyResponseBodyBuider();
 		case CREATE_NODE_COMMAND:
@@ -182,6 +208,7 @@ final class RespBodyBuilderProvider {
 			return new IdWhenSuccessBuilder();
 		case FIND_ELEMENT_BY_SYSIDTF_COMMAND:
 			return new AddressWhenSuccessBuilder();
+			// TODO change return type
 		case SET_SYSIDTF_COMMAND:
 			return new EmptyResponseBodyBuider();
 		default:

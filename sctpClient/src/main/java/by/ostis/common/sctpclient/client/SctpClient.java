@@ -3,6 +3,7 @@ package by.ostis.common.sctpclient.client;
 import java.util.List;
 
 import by.ostis.common.sctpclient.model.ScAddress;
+import by.ostis.common.sctpclient.model.ScIterator;
 import by.ostis.common.sctpclient.model.ScParameter;
 import by.ostis.common.sctpclient.model.ScString;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
@@ -15,28 +16,29 @@ public interface SctpClient {
 
     public void shutdown();
 
-    public SctpResponse getScLinkContent(ScAddress address);
+    public SctpResponse<String> getScLinkContent(ScAddress address);
 
-    public SctpResponse checkElementExistence(ScAddress address);
+    public SctpResponse<Boolean> checkElementExistence(ScAddress address);
 
-    public SctpResponse searchByIterator(ScIteratorType iteratorType, List<ScParameter> params);
+    public SctpResponse<List<ScIterator>> searchByIterator(ScIteratorType iteratorType, List<ScParameter> params);
 
-    public SctpResponse searchElement(ScString identifier);
+    public SctpResponse<ScAddress> searchElement(ScString identifier);
 
-    public SctpResponse deleteElement(ScAddress address);
+    public SctpResponse<Boolean> deleteElement(ScAddress address);
 
-    public SctpResponse createElement(ScElementType type);
+    public SctpResponse<ScAddress> createElement(ScElementType type);
 
-    public SctpResponse createScLink();
+    public SctpResponse<ScAddress> createScLink();
 
-    public SctpResponse createScArc(ScElementType type, ScAddress begAddress, ScAddress endAddress);
+    public SctpResponse<ScAddress> createScArc(ScElementType type, ScAddress begAddress, ScAddress endAddress);
 
-    public SctpResponse getArcBeginAndEnd(ScAddress arcAddress);
+    // TODO
+    public SctpResponse<Void> getArcBeginAndEnd(ScAddress arcAddress);
 
-    public SctpResponse searchScLinks(ScString content);
+    public SctpResponse<List<ScAddress>> searchScLinks(ScString content);
 
-    public SctpResponse setScRefContent(ScAddress address, ScString content);
+    public SctpResponse<Boolean> setScRefContent(ScAddress address, ScString content);
 
-    public SctpResponse setSystemIdentifier(ScAddress address, ScString identifier);
+    public SctpResponse<Boolean> setSystemIdentifier(ScAddress address, ScString identifier);
 
 }

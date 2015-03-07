@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import by.ostis.common.sctpclient.exception.ErrorMessage;
 import by.ostis.common.sctpclient.exception.TransportException;
+import by.ostis.common.sctpclient.model.request.SctpRequest;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 import by.ostis.common.sctpclient.model.response.SctpResultType;
@@ -18,7 +19,6 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
 
 	private static final int ID_BYTE_SIZE = 4;
-	private static final int RESULT_TYPE_CODE_SIZE = 1;
 	private static final int SIZE_BYTE_SIZE = 4;
 
 	private RespBodyBuilderProvider respBodyProvider;
@@ -31,7 +31,7 @@ class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
 	}
 
 	@Override
-	public SctpResponse build(InputStream source) throws TransportException {
+	public SctpResponse<T> build(InputStream source, SctpRequest request) throws TransportException {
 
 		SctpResponse<T> response = new SctpResponse<T>();
 		SctpResponseHeader header = new SctpResponseHeader();

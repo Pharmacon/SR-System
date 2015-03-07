@@ -22,6 +22,15 @@ public enum RequestHeaderType {
     private byte flag;
 
     private int commandId;
+    
+    public static RequestHeaderType getByCommandId(SctpCommandType commandId){
+		for (RequestHeaderType headerType : values()) {
+			if (headerType.commandType == commandId) {
+				return headerType;
+			}
+		}
+		throw new IllegalArgumentException("Unsupported Sctp command type");
+    }
 
     private RequestHeaderType(final SctpCommandType commandType, final byte flag, final int commandId) {
 	this.commandType = commandType;

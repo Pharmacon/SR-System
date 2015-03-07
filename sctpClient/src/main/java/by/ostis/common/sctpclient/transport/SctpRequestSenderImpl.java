@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import by.ostis.common.sctpclient.exception.ErrorMessage;
 import by.ostis.common.sctpclient.exception.InitializationException;
@@ -21,13 +19,9 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	private OutputStream outputStream;
 	private Socket socket;
 
-	private SctpResponseBuilder responseBuilder;
-
-	private Logger logger = LogManager.getLogger(SctpRequestSender.class);
 
 	public SctpRequestSenderImpl() {
 		super();
-		responseBuilder = new BytesSctpResponseBuilder();
 	}
 
 	@Override
@@ -37,7 +31,6 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 		} catch (IOException e) {
-			logger.error(e.getMessage());
 			throw new InitializationException(ErrorMessage.TRANSPORT_INIT_ERROR);
 		}
 	}
@@ -47,7 +40,6 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 		try {
 			closeResources();
 		} catch (IOException e) {
-			logger.error(e.getMessage());
 			throw new ShutdownException(ErrorMessage.SHUTDOWN_ERROR);
 		}
 	}
@@ -59,16 +51,19 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
 	}
 
 	@Override
-	public SctpResponse sendRequest(SctpRequest request)
+	public <Type> SctpResponse<Type> sendRequest(SctpRequest request)
 			throws TransportException {
 		try {
 			byte[] data = SctpRequestBytesBuilder.build(request);
 			outputStream.write(data);
 		} catch (IOException e) {
-			logger.error(e.getMessage());
 			throw new TransportException(ErrorMessage.REQUEST_SEND_ERROR);
 		}
-		return responseBuilder.build(inputStream);
+		SctpResponseBuilder<Type> responseBuilder = new BytesSctpResponseBuilder<>(); 
+		SctpResponse<Type> sctpResponse = responseBuilder.build(inputStream, request);
+		return sctpResponse;
 	}
+	
+	
 
 }

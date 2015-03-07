@@ -39,7 +39,7 @@ public class SctpResponse<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SctpResponse other = (SctpResponse) obj;
+		SctpResponse<?> other = (SctpResponse<?>) obj;
 		if (answer == null) {
 			if (other.answer != null)
 				return false;
