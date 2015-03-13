@@ -1,5 +1,7 @@
 package by.ostis.common.sctpclient.model;
 
+import java.util.List;
+
 public class ScIteratorFactory {
 
     public static ScIterator create3FAA(ScParameter scAddressFirst,
@@ -8,7 +10,7 @@ public class ScIteratorFactory {
         return buildScIterator(scAddressFirst, scElementTypeSecond,
                 scElementTypeThird);
     }
-
+    
     public static ScIterator create3AAF(ScParameter scElementTypeFirst,
             ScParameter scElementTypeSecond, ScParameter scAddress) {
 
@@ -72,6 +74,15 @@ public class ScIteratorFactory {
     }
 
     private static ScIterator buildScIterator(ScParameter... parameters) {
+
+        ScIterator scIterator = new ScIterator();
+        for (ScParameter scParameter : parameters) {
+            scIterator.registerParameter(scParameter);
+        }
+        return scIterator;
+    }
+    
+    public static ScIterator buildScIterator(List<ScParameter> parameters) {
 
         ScIterator scIterator = new ScIterator();
         for (ScParameter scParameter : parameters) {

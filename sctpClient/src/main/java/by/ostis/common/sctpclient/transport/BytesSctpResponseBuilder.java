@@ -8,8 +8,10 @@ import java.nio.ByteOrder;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import by.ostis.common.sctpclient.exception.AnswerParseException;
 import by.ostis.common.sctpclient.exception.ErrorMessage;
 import by.ostis.common.sctpclient.exception.TransportException;
+import by.ostis.common.sctpclient.model.request.SctpRequest;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.model.response.SctpResponseHeader;
 import by.ostis.common.sctpclient.model.response.SctpResultType;
@@ -33,7 +35,7 @@ class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
     }
 
     @Override
-    public SctpResponse<T> build(InputStream source) throws TransportException {
+    public SctpResponse<T> build(InputStream source, SctpRequest sctpRequest) throws TransportException {
 
         SctpResponse<T> response = new SctpResponse<T>();
         SctpResponseHeader header = new SctpResponseHeader();
@@ -62,11 +64,11 @@ class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
                     header.getArgumentSize());
 
             RespBodyBuilder<T> bodyBuider = respBodyProvider
-                    .create(commandType);
+                    .create(commandType, sctpRequest);
             T answer = bodyBuider.getAnswer(parameterBytes, header);
             response.setAnswer(answer);
 
-        } catch (IOException e) {
+        } catch (IOException | AnswerParseException e) {
             logger.error(e.getMessage());
             throw new TransportException(ErrorMessage.RESPONSE_READ_ERROR);
         }

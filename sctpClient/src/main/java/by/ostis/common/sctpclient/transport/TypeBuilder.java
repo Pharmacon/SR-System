@@ -1,5 +1,7 @@
 package by.ostis.common.sctpclient.transport;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -30,6 +32,15 @@ class TypeBuilder {
         short offset = buffer.getShort(OFFSET_BEGIN_INDEX);
         return new ScAddress(segment, offset);
 
+    }
+    
+    public static ScAddress buildScAddress(InputStream source) throws IOException{
+        byte[] scAddressBytes = new byte[4];
+        source.read(scAddressBytes);
+        ByteBuffer byteBuffer = ByteBuffer.wrap(scAddressBytes);
+        short segment = byteBuffer.getShort(SEGMENT_BEGIN_INDEX);
+        short offset = byteBuffer.getShort(OFFSET_BEGIN_INDEX);
+        return new ScAddress(segment, offset);
     }
 
 }

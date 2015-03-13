@@ -65,7 +65,7 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
             throw new TransportException(ErrorMessage.REQUEST_SEND_ERROR);
         }
         SctpResponseBuilder<Type> responseBuilder = new BytesSctpResponseBuilder<>();
-        SctpResponse<Type> sctpResponse = responseBuilder.build(inputStream);
+        SctpResponse<Type> sctpResponse = responseBuilder.build(inputStream, request);
         return sctpResponse;
     }
 
