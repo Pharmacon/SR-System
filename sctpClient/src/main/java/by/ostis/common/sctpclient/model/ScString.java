@@ -25,7 +25,7 @@ public class ScString implements ScParameter {
     @Override
     public byte[] getBytes() {
 
-        ByteBuffer buffer = ByteBuffer.allocate(content.length());
+        ByteBuffer buffer = ByteBuffer.allocate(content.getBytes().length);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.put(content.getBytes());
         return buffer.array();

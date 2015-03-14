@@ -93,20 +93,10 @@ public class SctpClientImpl implements SctpClient {
         return sendRequest(SctpCommandType.CREATE_ARC_COMMAND, type, begAddress, endAddress);
     }
 
-    // TODO add implementation
     @Override
-    public SctpResponse getArcBeginAndEnd(final ScAddress arcAddress) {
+    public SctpResponse<List<ScAddress>> getArcBeginAndEnd(final ScAddress arcAddress) {
 
-        SctpResponse response = new SctpResponse();
-        try {
-            // TODO need to test
-            response = this.sender.sendRequest(this.requestBuilder.buildRequest(
-                    RequestHeaderType.FIND_ARC_BEGIN_AND_END, arcAddress));
-        } catch (final TransportException e) {
-            // TODO handle exception
-            e.printStackTrace();
-        }
-        return response;
+        return sendRequest(SctpCommandType.GET_ARC_VERTEXES_COMMAND, arcAddress);
     }
 
     @Override
@@ -136,55 +126,40 @@ public class SctpClientImpl implements SctpClient {
             List<ScParameter> params) {
 
         ScIterator iterator = ScIteratorFactory.buildScIterator(params);
-        /*switch (iteratorType) {
-            
-           case SCTP_ITERATOR_3F_A_A:
-                // iterator = ScIteratorFactory.create3FAA(scAddressFirst,
-                // scElementTypeSecond, scElementTypeThird);
-                break;
-
-            case SCTP_ITERATOR_3F_A_F:
-                // iterator = ScIteratorFactory.create3FAA(scAddressFirst,
-                // scElementTypeSecond, scElementTypeThird);
-                break;
-            case SCTP_ITERATOR_3_A_A_F:
-                // iterator = ScIteratorFactory.create3AAF(scElementTypeFirst,
-                // scElementTypeSecond, scAddress);
-                break;
-            case SCTP_ITERATOR_5F_A_A_A_F:
-                // iterator = ScIteratorFactory.create5FAAAF(scAddressFirst,
-                // scElementTypeSecond, scElementTypeThird, scElementTypeForth,
-                // scAddressFifth);
-                break;
-            case SCTP_ITERATOR_5_A_A_F_A_A:
-                // iterator = ScIteratorFactory.create5AAFAA(scElementTypeFirst,
-                // scElementTypeSecond, scAddressThird, scElementTypeForth,
-                // scElementTypeFifth);
-                break;
-            case SCTP_ITERATOR_5_A_A_F_A_F:
-                // iterator = ScIteratorFactory.create5AAFAF(scElementTypeFirst,
-                // scElementTypeSecond, scAddressThird, scElementTypeForth,
-                // scAddressFifth);
-                break;
-            case SCTP_ITERATOR_5_F_A_A_A_A:
-                // iterator = ScIteratorFactory.create5FAAAA(scAddressFirst,
-                // scElementTypeSecond, scElementThird, scElementTypeForth,
-                // scElementTypeFifth);
-                break;
-            case SCTP_ITERATOR_5_F_A_F_A_A:
-                // iterator = ScIteratorFactory.create5FAFAA(scAddressFirst,
-                // scElementTypeSecond, scAddressThird, scElementTypeForth,
-                // scElementTypeFifth);
-                break;
-            case SCTP_ITERATOR_5_F_A_F_A_F:
-                // iterator = ScIteratorFactory.create5FAFAF(scAddressFirst,
-                // scElementTypeSecond, scAddressThird, scElementTypeForth,
-                // scAddressFifth);
-                break;
-            default:
-                break;
-
-        }*/
+        /*
+         * switch (iteratorType) {
+         * 
+         * case SCTP_ITERATOR_3F_A_A: // iterator =
+         * ScIteratorFactory.create3FAA(scAddressFirst, // scElementTypeSecond,
+         * scElementTypeThird); break;
+         * 
+         * case SCTP_ITERATOR_3F_A_F: // iterator =
+         * ScIteratorFactory.create3FAA(scAddressFirst, // scElementTypeSecond,
+         * scElementTypeThird); break; case SCTP_ITERATOR_3_A_A_F: // iterator =
+         * ScIteratorFactory.create3AAF(scElementTypeFirst, //
+         * scElementTypeSecond, scAddress); break; case
+         * SCTP_ITERATOR_5F_A_A_A_F: // iterator =
+         * ScIteratorFactory.create5FAAAF(scAddressFirst, //
+         * scElementTypeSecond, scElementTypeThird, scElementTypeForth, //
+         * scAddressFifth); break; case SCTP_ITERATOR_5_A_A_F_A_A: // iterator =
+         * ScIteratorFactory.create5AAFAA(scElementTypeFirst, //
+         * scElementTypeSecond, scAddressThird, scElementTypeForth, //
+         * scElementTypeFifth); break; case SCTP_ITERATOR_5_A_A_F_A_F: //
+         * iterator = ScIteratorFactory.create5AAFAF(scElementTypeFirst, //
+         * scElementTypeSecond, scAddressThird, scElementTypeForth, //
+         * scAddressFifth); break; case SCTP_ITERATOR_5_F_A_A_A_A: // iterator =
+         * ScIteratorFactory.create5FAAAA(scAddressFirst, //
+         * scElementTypeSecond, scElementThird, scElementTypeForth, //
+         * scElementTypeFifth); break; case SCTP_ITERATOR_5_F_A_F_A_A: //
+         * iterator = ScIteratorFactory.create5FAFAA(scAddressFirst, //
+         * scElementTypeSecond, scAddressThird, scElementTypeForth, //
+         * scElementTypeFifth); break; case SCTP_ITERATOR_5_F_A_F_A_F: //
+         * iterator = ScIteratorFactory.create5FAFAF(scAddressFirst, //
+         * scElementTypeSecond, scAddressThird, scElementTypeForth, //
+         * scAddressFifth); break; default: break;
+         * 
+         * }
+         */
         return sendRequest(SctpCommandType.ITERATE_ELEMENTS_COMMAND, iteratorType, iterator);
     }
 

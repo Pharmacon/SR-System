@@ -10,7 +10,7 @@ public enum SctpCommandType {
     CREATE_NODE_COMMAND(0x04), // create new sc-node
     CREATE_LINK_COMMAND(0x05), // create new sc-link
     CREATE_ARC_COMMAND(0x06), // create new sc-arc
-    GET_ARC_COMMAND(0x07), // return begin and end element of sc-arc
+    GET_ARC_VERTEXES_COMMAND(0x07), // return begin and end element of sc-arc
     GET_LINK_CONTENT_COMMAND(0x09), // return content of sc-link
     FIND_LINKS_COMMAND(0x0a), // return sc-links with specified content
     SET_LINK_CONTENT_COMMAND(0x0b), // setup new content for the link

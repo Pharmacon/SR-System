@@ -116,7 +116,7 @@ final class RespBodyBuilderProvider {
 
     }
 
-    private class GetArcBuilder implements RespBodyBuilder<List<ScAddress>> {
+    private class GetArcVertexesBuilder implements RespBodyBuilder<List<ScAddress>> {
 
         private static final int END_ADDRESS_BEGIN_INDEX = 4;
 
@@ -171,7 +171,8 @@ final class RespBodyBuilderProvider {
         }
 
         @Override
-        public List<ScIterator> getAnswer(byte[] bytes, SctpResponseHeader responseHeader) throws AnswerParseException {
+        public List<ScIterator> getAnswer(byte[] bytes, SctpResponseHeader responseHeader)
+                throws AnswerParseException {
 
             final ScIteratorType iteratorType = getIteratorTypeFromRequest();
             int parameterNumber = ScIteratorParameterNumberResolver
@@ -179,15 +180,22 @@ final class RespBodyBuilderProvider {
             List<ScIterator> result = new ArrayList<ScIterator>();
             ByteArrayInputStream source = new ByteArrayInputStream(bytes);
             try {
-                int iteratorNumber = InputStreamReader.readInt(source);
+                int answerIterCount = InputStreamReader.readInt(source);
                 final SctpResultType resultType = responseHeader.getResultType();
                 if (SctpResultType.SCTP_RESULT_OK == resultType) {
-                    for (int i = 0; i < iteratorNumber; ++i) {
-                        ScIterator scIterator = buildScIterator(parameterNumber, source);
+                    for (int iterIndex = 0; iterIndex < answerIterCount; ++iterIndex) {
+                        // ScIterator scIterator =
+                        // buildScIterator(parameterNumber, source);
+                        ScIterator scIterator = new ScIterator();
+                        for (int j = 0; j < parameterNumber; ++j) {
+                            ScAddress scAddress = TypeBuilder.buildScAddress(source);
+                            scIterator.registerParameter(scAddress);
+                        }
                         result.add(scIterator);
                     }
                     return result;
                 }
+                // TODO throw exception
                 return null;
 
             } catch (IOException e) {
@@ -195,16 +203,17 @@ final class RespBodyBuilderProvider {
             }
         }
 
-        private ScIterator buildScIterator(int paramNumber, ByteArrayInputStream source)
-                throws IOException {
-
-            ScIterator scIterator = new ScIterator();
-            for (int j = 0; j < paramNumber; ++j) {
-                ScAddress scAddress = TypeBuilder.buildScAddress(source);
-                scIterator.registerParameter(scAddress);
-            }
-            return scIterator;
-        }
+        // private ScIterator buildScIterator(int paramNumber,
+        // ByteArrayInputStream source)
+        // throws IOException {
+        //
+        // ScIterator scIterator = new ScIterator();
+        // for (int j = 0; j < paramNumber; ++j) {
+        // ScAddress scAddress = TypeBuilder.buildScAddress(source);
+        // scIterator.registerParameter(scAddress);
+        // }
+        // return scIterator;
+        // }
 
         private ScIteratorType getIteratorTypeFromRequest() {
 
@@ -229,8 +238,8 @@ final class RespBodyBuilderProvider {
                 return new AddressWhenSuccessBuilder();
             case CREATE_ARC_COMMAND:
                 return new AddressWhenSuccessBuilder();
-            case GET_ARC_COMMAND:
-                return new GetArcBuilder();
+            case GET_ARC_VERTEXES_COMMAND:
+                return new GetArcVertexesBuilder();
             case GET_LINK_CONTENT_COMMAND:
                 return new LinkContentBuilder();
             case FIND_LINKS_COMMAND:
@@ -249,12 +258,13 @@ final class RespBodyBuilderProvider {
                 return new SctpIteratorResponseBuilder(sctpRequest);
             default:
                 // TODO: 0x02 Ask ElementTypes and add to ScElementType enum
-                // TODO: 0x08 - underfined on sc-machine wiki
-                // TODO: 0x0c
-                // TODO: 0x0d
-                // TODO: 0x10
-                // TODO:0xa2
-                // TODO:0xa3 ask version encoding
+                // TODO: 0x08 - undefined on sc-machine wiki
+                // TODO: 0x0e - Event subscription
+                // TODO: 0x0f - Delete event subscription
+                // TODO: 0x0d - Complex construction iteration
+                // TODO: 0x10 - Passed event inquiry
+                // TODO:0xa2 - Server statistics in time interval
+                // TODO:0xa3 - Ask protocol version(ask encoding)
                 throw new IllegalArgumentException("Not support command= " + command);
         }
     }
