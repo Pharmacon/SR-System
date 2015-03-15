@@ -16,6 +16,7 @@ import by.ostis.common.sctpclient.model.request.SctpRequest;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.transport.SctpRequestSender;
 import by.ostis.common.sctpclient.transport.SctpRequestSenderImpl;
+import by.ostis.common.sctpclient.utils.AssertionUtils;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
 import by.ostis.common.sctpclient.utils.constants.ScIteratorType;
 import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
@@ -59,24 +60,28 @@ public class SctpClientImpl implements SctpClient {
     @Override
     public SctpResponse<Boolean> checkElementExistence(final ScAddress address) {
 
+        AssertionUtils.notNull(address);
         return sendRequest(SctpCommandType.CHECK_ELEMENT_COMMAND, address);
     }
 
     @Override
     public SctpResponse<ScAddress> searchElement(final ScString identifier) {
 
+        AssertionUtils.notNull(identifier);
         return sendRequest(SctpCommandType.FIND_ELEMENT_BY_SYSIDTF_COMMAND, new ScContentSize(
                 identifier.getByteSize()), identifier);
     }
 
     public SctpResponse<Boolean> deleteElement(final ScAddress address) {
 
+        AssertionUtils.notNull(address);
         return sendRequest(SctpCommandType.ERASE_ELEMENT_COMMAND, address);
     }
 
     @Override
     public SctpResponse<ScAddress> createElement(final ScElementType type) {
 
+        AssertionUtils.notNull(type);
         return sendRequest(SctpCommandType.CREATE_NODE_COMMAND, type);
     }
 
@@ -90,18 +95,21 @@ public class SctpClientImpl implements SctpClient {
     public SctpResponse<ScAddress> createScArc(final ScElementType type,
             final ScAddress begAddress, final ScAddress endAddress) {
 
+        AssertionUtils.notNull(type, begAddress, endAddress);
         return sendRequest(SctpCommandType.CREATE_ARC_COMMAND, type, begAddress, endAddress);
     }
 
     @Override
     public SctpResponse<List<ScAddress>> getArcBeginAndEnd(final ScAddress arcAddress) {
 
+        AssertionUtils.notNull(arcAddress);
         return sendRequest(SctpCommandType.GET_ARC_VERTEXES_COMMAND, arcAddress);
     }
 
     @Override
     public SctpResponse<List<ScAddress>> searchScLinks(final ScString content) {
 
+        AssertionUtils.notNull(content);
         return sendRequest(SctpCommandType.FIND_LINKS_COMMAND,
                 new ScContentSize(content.getByteSize()), content);
     }
@@ -109,6 +117,7 @@ public class SctpClientImpl implements SctpClient {
     @Override
     public SctpResponse<Boolean> setScRefContent(final ScAddress address, final ScString content) {
 
+        AssertionUtils.notNull(address, content);
         return sendRequest(SctpCommandType.SET_LINK_CONTENT_COMMAND, address, new ScContentSize(
                 content.getByteSize()), content);
     }
@@ -117,6 +126,7 @@ public class SctpClientImpl implements SctpClient {
     public SctpResponse<Boolean> setSystemIdentifier(final ScAddress address,
             final ScString identifier) {
 
+        AssertionUtils.notNull(address, identifier);
         return sendRequest(SctpCommandType.SET_SYSIDTF_COMMAND, address, new ScContentSize(
                 identifier.getByteSize()), identifier);
     }
@@ -125,6 +135,8 @@ public class SctpClientImpl implements SctpClient {
     public SctpResponse<List<ScIterator>> searchByIterator(ScIteratorType iteratorType,
             List<ScParameter> params) {
 
+        AssertionUtils.notNull(iteratorType, params);
+        AssertionUtils.notNull(params.toArray());
         ScIterator iterator = ScIteratorFactory.buildScIterator(params);
         /*
          * switch (iteratorType) {
