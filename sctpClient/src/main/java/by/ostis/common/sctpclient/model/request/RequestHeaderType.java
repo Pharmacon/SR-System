@@ -14,7 +14,7 @@ public enum RequestHeaderType {
     SEARCH_SC_LINKS(SctpCommandType.FIND_LINKS_COMMAND, (byte) 0, 0),
     SET_SC_LINK_CONTENT(SctpCommandType.SET_LINK_CONTENT_COMMAND, (byte) 0, 0),
     SET_SYSIDTF(SctpCommandType.SET_SYSIDTF_COMMAND, (byte) 0, 0),
-    FIND_ARC_BEGIN_AND_END(SctpCommandType.GET_ARC_COMMAND, (byte) 0, 0),
+    FIND_ARC_BEGIN_AND_END(SctpCommandType.GET_ARC_VERTEXES_COMMAND, (byte) 0, 0),
     ITERATOR_SEARCH(SctpCommandType.ITERATE_ELEMENTS_COMMAND, (byte) 0, 0),
     GET_LINK_CONTENT(SctpCommandType.GET_LINK_CONTENT_COMMAND, (byte) 0, 0);
 

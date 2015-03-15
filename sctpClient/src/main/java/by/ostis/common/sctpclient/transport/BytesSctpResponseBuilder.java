@@ -19,23 +19,23 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
 
-    private static final int        ID_BYTE_SIZE   = 4;
+    private static final int ID_BYTE_SIZE = 4;
 
-    private static final int        SIZE_BYTE_SIZE = 4;
+    private static final int SIZE_BYTE_SIZE = 4;
 
-    private RespBodyBuilderProvider respBodyProvider;
+    private ResponseBodyBuilderProvider respBodyProvider;
 
-    private Logger                  logger         = LogManager
-                                                           .getLogger(BytesSctpResponseBuilder.class);
+    private Logger logger = LogManager.getLogger(BytesSctpResponseBuilder.class);
 
     public BytesSctpResponseBuilder() {
 
         super();
-        respBodyProvider = new RespBodyBuilderProvider();
+        respBodyProvider = new ResponseBodyBuilderProvider();
     }
 
     @Override
-    public SctpResponse<T> build(InputStream source, SctpRequest sctpRequest) throws TransportException {
+    public SctpResponse<T> build(InputStream source, SctpRequest sctpRequest)
+            throws TransportException {
 
         SctpResponse<T> response = new SctpResponse<T>();
         SctpResponseHeader header = new SctpResponseHeader();
@@ -60,11 +60,9 @@ class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
 
             SctpCommandType commandType = header.getCommandType();
 
-            byte[] parameterBytes = getBytesFromResp(source,
-                    header.getArgumentSize());
+            byte[] parameterBytes = getBytesFromResp(source, header.getArgumentSize());
 
-            RespBodyBuilder<T> bodyBuider = respBodyProvider
-                    .create(commandType, sctpRequest);
+            RespBodyBuilder<T> bodyBuider = respBodyProvider.create(commandType, sctpRequest);
             T answer = bodyBuider.getAnswer(parameterBytes, header);
             response.setAnswer(answer);
 
@@ -75,8 +73,7 @@ class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
         return response;
     }
 
-    private byte[] getBytesFromResp(InputStream source, int count)
-            throws IOException {
+    private byte[] getBytesFromResp(InputStream source, int count) throws IOException {
 
         byte[] result = new byte[count];
         source.read(result);

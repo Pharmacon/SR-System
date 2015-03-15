@@ -62,7 +62,7 @@ public class SctpResponseBuilderTest {
 		{ new byte[] { 6, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 7, 0 }, SctpCommandType.CREATE_ARC_COMMAND, 0,
 			SctpResultType.SCTP_RESULT_OK, 4 },
 
-		{ new byte[] { 7, 0, 0, 0, 0, 0, 8, 0, 0, 0,0,0,1,1, 0, 0, 7, 0 }, SctpCommandType.GET_ARC_COMMAND, 0,
+		{ new byte[] { 7, 0, 0, 0, 0, 0, 8, 0, 0, 0,0,0,1,1, 0, 0, 7, 0 }, SctpCommandType.GET_ARC_VERTEXES_COMMAND, 0,
 			SctpResultType.SCTP_RESULT_OK, 8 },
 
 		{ new byte[] { 9, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 7, 0 }, SctpCommandType.GET_LINK_CONTENT_COMMAND, 0,

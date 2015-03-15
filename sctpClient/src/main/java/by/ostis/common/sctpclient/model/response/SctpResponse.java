@@ -4,7 +4,7 @@ public class SctpResponse<T> {
 
     private SctpResponseHeader header;
 
-    private T                  answer;
+    private T answer;
 
     public SctpResponseHeader getHeader() {
 

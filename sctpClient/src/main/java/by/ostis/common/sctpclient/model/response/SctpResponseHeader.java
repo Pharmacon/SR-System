@@ -6,11 +6,11 @@ public class SctpResponseHeader {
 
     private SctpCommandType commandType;
 
-    private int             commandId;
+    private int commandId;
 
-    private SctpResultType  resultType;
+    private SctpResultType resultType;
 
-    private int             argumentSize;
+    private int argumentSize;
 
     public SctpResponseHeader() {
 
@@ -59,9 +59,8 @@ public class SctpResponseHeader {
     @Override
     public String toString() {
 
-        return "SctpResponseHeader [commandType=" + commandType.name()
-                + ", commandId=" + commandId + ", resultType="
-                + resultType.name() + ", argumentSize=" + argumentSize + "]";
+        return "SctpResponseHeader [commandType=" + commandType.name() + ", commandId=" + commandId
+                + ", resultType=" + resultType.name() + ", argumentSize=" + argumentSize + "]";
     }
 
     @Override
@@ -71,10 +70,8 @@ public class SctpResponseHeader {
         int result = 1;
         result = prime * result + argumentSize;
         result = prime * result + commandId;
-        result = prime * result
-                + ((commandType == null) ? 0 : commandType.hashCode());
-        result = prime * result
-                + ((resultType == null) ? 0 : resultType.hashCode());
+        result = prime * result + ((commandType == null) ? 0 : commandType.hashCode());
+        result = prime * result + ((resultType == null) ? 0 : resultType.hashCode());
         return result;
     }
 
