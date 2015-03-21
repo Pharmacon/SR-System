@@ -6,8 +6,7 @@ public enum RequestHeaderType {
 
     CHECK_ELEMENT(SctpCommandType.CHECK_ELEMENT_COMMAND, (byte) 0, 0),
     DELETE_ELEMENT(SctpCommandType.ERASE_ELEMENT_COMMAND, (byte) 0, 0),
-    SEARCH_ELEMENT_BY_IDENTIFIER(
-            SctpCommandType.FIND_ELEMENT_BY_SYSIDTF_COMMAND, (byte) 0, 0),
+    SEARCH_ELEMENT_BY_IDENTIFIER(SctpCommandType.FIND_ELEMENT_BY_SYSIDTF_COMMAND, (byte) 0, 0),
     CREATE_ELEMENT(SctpCommandType.CREATE_NODE_COMMAND, (byte) 0, 0),
     CREATE_SC_LINK(SctpCommandType.CREATE_LINK_COMMAND, (byte) 0, 0),
     CREATE_SC_ARC(SctpCommandType.CREATE_ARC_COMMAND, (byte) 0, 0),
@@ -20,9 +19,9 @@ public enum RequestHeaderType {
 
     private SctpCommandType commandType;
 
-    private byte            flag;
+    private byte flag;
 
-    private int             commandId;
+    private int commandId;
 
     public static RequestHeaderType getByCommandId(SctpCommandType commandId) {
 
@@ -34,8 +33,8 @@ public enum RequestHeaderType {
         throw new IllegalArgumentException("Unsupported Sctp command type");
     }
 
-    private RequestHeaderType(final SctpCommandType commandType,
-            final byte flag, final int commandId) {
+    private RequestHeaderType(final SctpCommandType commandType, final byte flag,
+            final int commandId) {
 
         this.commandType = commandType;
         this.flag = flag;

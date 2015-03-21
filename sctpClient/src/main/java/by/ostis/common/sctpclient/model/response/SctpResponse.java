@@ -1,6 +1,21 @@
 package by.ostis.common.sctpclient.model.response;
 
+import by.ostis.common.sctpclient.model.ScAddress;
+
 public class SctpResponse<T> {
+
+    public static <EMPTY_TYPE> SctpResponse<EMPTY_TYPE> EMPTY_RESPONSE() {
+
+        return new SctpResponse<EMPTY_TYPE>() {
+
+            @Override
+            public boolean isEmpty() {
+
+                return true;
+            }
+
+        };
+    }
 
     private SctpResponseHeader header;
 
@@ -24,6 +39,11 @@ public class SctpResponse<T> {
     public void setAnswer(T answer) {
 
         this.answer = answer;
+    }
+
+    public boolean isEmpty() {
+
+        return false;
     }
 
     @Override

@@ -8,7 +8,8 @@ import java.nio.ByteOrder;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import by.ostis.common.sctpclient.exception.AnswerParseException;
+import by.ostis.common.sctpclient.exception.SctpClientException;
+import by.ostis.common.sctpclient.exception.IllegalResultCodeException;
 import by.ostis.common.sctpclient.exception.ErrorMessage;
 import by.ostis.common.sctpclient.exception.TransportException;
 import by.ostis.common.sctpclient.model.request.SctpRequest;
@@ -35,7 +36,7 @@ class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
 
     @Override
     public SctpResponse<T> build(InputStream source, SctpRequest sctpRequest)
-            throws TransportException {
+            throws SctpClientException {
 
         SctpResponse<T> response = new SctpResponse<T>();
         SctpResponseHeader header = new SctpResponseHeader();
@@ -66,7 +67,7 @@ class BytesSctpResponseBuilder<T> implements SctpResponseBuilder<T> {
             T answer = bodyBuider.getAnswer(parameterBytes, header);
             response.setAnswer(answer);
 
-        } catch (IOException | AnswerParseException e) {
+        } catch (IOException e) {
             logger.error(e.getMessage());
             throw new TransportException(ErrorMessage.RESPONSE_READ_ERROR);
         }

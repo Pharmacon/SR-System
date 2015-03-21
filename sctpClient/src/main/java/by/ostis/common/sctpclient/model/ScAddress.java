@@ -46,8 +46,7 @@ public class ScAddress implements ScParameter {
     @Override
     public byte[] getBytes() {
 
-        ByteBuffer tempBuffer = ByteBuffer.allocate(ScParameterSize.SC_ADDRESS
-                .getSize());
+        ByteBuffer tempBuffer = ByteBuffer.allocate(ScParameterSize.SC_ADDRESS.getSize());
         tempBuffer.order(ByteOrder.LITTLE_ENDIAN);
         tempBuffer.putShort(segment);
         tempBuffer.putShort(offset);
@@ -62,7 +61,7 @@ public class ScAddress implements ScParameter {
 
     public String toString() {
 
-        return "segment:" + this.segment + " offset:" + this.offset;
+        return "ScAddress [segment:" + this.segment + " offset:" + this.offset + "]";
     }
 
     @Override

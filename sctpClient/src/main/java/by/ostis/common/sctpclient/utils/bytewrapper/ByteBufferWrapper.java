@@ -7,7 +7,7 @@ public abstract class ByteBufferWrapper {
 
     protected ByteBuffer currentBuffer;
 
-    protected int        currentSize;
+    protected int currentSize;
 
     public ByteBufferWrapper() {
 

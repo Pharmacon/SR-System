@@ -6,11 +6,11 @@ public class SctpRequestHeader {
 
     private SctpCommandType commandType;
 
-    private byte            flag;
+    private byte flag;
 
-    private int             commandId;
+    private int commandId;
 
-    private int             argumentSize;
+    private int argumentSize;
 
     public SctpRequestHeader() {
 
@@ -56,8 +56,7 @@ public class SctpRequestHeader {
         this.argumentSize = argumentSize;
     }
 
-    public SctpRequestHeader(SctpCommandType commandType, byte flag,
-            int commandId, int argumentSize) {
+    public SctpRequestHeader(SctpCommandType commandType, byte flag, int commandId, int argumentSize) {
 
         this.commandType = commandType;
         this.flag = flag;

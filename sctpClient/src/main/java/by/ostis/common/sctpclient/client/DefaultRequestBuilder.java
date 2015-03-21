@@ -9,8 +9,7 @@ import by.ostis.common.sctpclient.model.request.SctpRequestHeader;
 public class DefaultRequestBuilder implements RequestBuilder {
 
     @Override
-    public SctpRequest buildRequest(RequestHeaderType headerType,
-            ScParameter... parameters) {
+    public SctpRequest buildRequest(RequestHeaderType headerType, ScParameter... parameters) {
 
         SctpRequest newRequest = new SctpRequest();
         SctpRequestBody requestBody = new SctpRequestBody();

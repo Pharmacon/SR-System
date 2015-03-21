@@ -22,7 +22,7 @@ public enum ScElementType implements ScParameter {
     SC_TYPE_ARC_TEMP(0x400),
     SC_TYPE_ARC_PERM(0x800);
 
-    private short     value;
+    private short value;
 
     public static int SC_ELEMENT_TYPE_BYTE_SIZE = 2;
 

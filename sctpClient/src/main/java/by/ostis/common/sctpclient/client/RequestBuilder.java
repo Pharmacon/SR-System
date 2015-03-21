@@ -6,7 +6,6 @@ import by.ostis.common.sctpclient.model.request.SctpRequest;
 
 public interface RequestBuilder {
 
-    public SctpRequest buildRequest(RequestHeaderType requestHeaderType,
-            ScParameter... parameters);
+    public SctpRequest buildRequest(RequestHeaderType requestHeaderType, ScParameter... parameters);
 
 }

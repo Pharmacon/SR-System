@@ -23,8 +23,7 @@ public class ScContentSize implements ScParameter {
     @Override
     public byte[] getBytes() {
 
-        ByteBuffer buffer = ByteBuffer.allocate(ScParameterSize.SC_CAPACITY
-                .getSize());
+        ByteBuffer buffer = ByteBuffer.allocate(ScParameterSize.SC_CAPACITY.getSize());
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putInt(size);
         return buffer.array();

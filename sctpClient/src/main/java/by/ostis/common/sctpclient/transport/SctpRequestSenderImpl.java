@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import by.ostis.common.sctpclient.exception.SctpClientException;
+import by.ostis.common.sctpclient.exception.IllegalResultCodeException;
 import by.ostis.common.sctpclient.exception.ErrorMessage;
 import by.ostis.common.sctpclient.exception.InitializationException;
 import by.ostis.common.sctpclient.exception.ShutdownException;
@@ -14,11 +16,11 @@ import by.ostis.common.sctpclient.model.response.SctpResponse;
 
 public class SctpRequestSenderImpl implements SctpRequestSender {
 
-    private InputStream  inputStream;
+    private InputStream inputStream;
 
     private OutputStream outputStream;
 
-    private Socket       socket;
+    private Socket socket;
 
     public SctpRequestSenderImpl() {
 
@@ -55,8 +57,7 @@ public class SctpRequestSenderImpl implements SctpRequestSender {
     }
 
     @Override
-    public <Type> SctpResponse<Type> sendRequest(SctpRequest request)
-            throws TransportException {
+    public <Type> SctpResponse<Type> sendRequest(SctpRequest request) throws SctpClientException {
 
         try {
             byte[] data = SctpRequestBytesBuilder.build(request);

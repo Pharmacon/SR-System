@@ -10,7 +10,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import by.ostis.common.sctpclient.exception.AnswerParseException;
+import by.ostis.common.sctpclient.exception.SctpClientException;
+import by.ostis.common.sctpclient.exception.IllegalResultCodeException;
+import by.ostis.common.sctpclient.exception.TransportException;
 import by.ostis.common.sctpclient.model.ScAddress;
 import by.ostis.common.sctpclient.model.ScIterator;
 import by.ostis.common.sctpclient.model.request.SctpRequest;
@@ -25,40 +27,73 @@ import by.ostis.common.sctpclient.utils.constants.SctpCommandType;
 
 final class ResponseBodyBuilderProvider {
 
+    private interface SuccessAction<T> {
+
+        T doAction() throws SctpClientException;
+    }
+
+    private class SctpResultTypeHandler {
+
+        <T> T handle(SctpResponseHeader responseHeader, SuccessAction<T> success)
+                throws SctpClientException {
+
+            SctpResultType resultType = responseHeader.getResultType();
+            switch (resultType) {
+                case SCTP_RESULT_OK:
+                    return success.doAction();
+                    // TDOD Change exception type.
+                case SCTP_RESULT_FAIL:
+                    throw new ElementNotFoundException("");
+                case SCTP_RESULT_ERROR_NO_ELEMENT:
+                    throw new SctpClientException("");
+                default:
+                    throw new IllegalResultCodeException("");
+            }
+        }
+    }
+
     private class AddressWhenSuccessBuilder implements RespBodyBuilder<ScAddress> {
 
         @Override
         public ScAddress getAnswer(final byte[] bytes, final SctpResponseHeader responseHeader)
-                throws AnswerParseException {
+                throws SctpClientException {
 
-            final SctpResultType resultType = responseHeader.getResultType();
-            if (SctpResultType.SCTP_RESULT_OK == resultType) {
-                return TypeBuilder.buildScAddress(bytes);
-            }
-            throw new AnswerParseException();
+            return new SctpResultTypeHandler().handle(responseHeader,
+                    new SuccessAction<ScAddress>() {
+
+                        @Override
+                        public ScAddress doAction() {
+
+                            return TypeBuilder.buildScAddress(bytes);
+                        }
+                    });
         }
-
     }
 
     private class ElementTypeBuilder implements RespBodyBuilder<ScElementType> {
 
         @Override
         public ScElementType getAnswer(final byte[] bytes, final SctpResponseHeader responseHeader)
-                throws AnswerParseException {
+                throws SctpClientException {
 
-            final SctpResultType resultType = responseHeader.getResultType();
-            if (resultType.equals(SctpResultType.SCTP_RESULT_OK)) {
-                final byte[] elementCode = Arrays.copyOf(bytes,
-                        ScElementType.SC_ELEMENT_TYPE_BYTE_SIZE);
-                final short code = ByteBuffer.wrap(elementCode).order(ByteOrder.LITTLE_ENDIAN)
-                        .getShort();
-                for (final ScElementType elementType : ScElementType.values()) {
-                    if (code == elementType.getValue()) {
-                        return elementType;
-                    }
-                }
-            }
-            throw new AnswerParseException();
+            return new SctpResultTypeHandler().handle(responseHeader,
+                    new SuccessAction<ScElementType>() {
+
+                        @Override
+                        public ScElementType doAction() throws SctpClientException {
+
+                            final byte[] elementCode = Arrays.copyOf(bytes,
+                                    ScElementType.SC_ELEMENT_TYPE_BYTE_SIZE);
+                            final short code = ByteBuffer.wrap(elementCode)
+                                    .order(ByteOrder.LITTLE_ENDIAN).getShort();
+                            for (final ScElementType elementType : ScElementType.values()) {
+                                if (code == elementType.getValue()) {
+                                    return elementType;
+                                }
+                            }
+                            throw new SctpClientException("");
+                        }
+                    });
         }
 
     }
@@ -84,17 +119,21 @@ final class ResponseBodyBuilderProvider {
 
         @Override
         public List<ScAddress> getAnswer(final byte[] bytes, final SctpResponseHeader responseHeader)
-                throws AnswerParseException {
+                throws SctpClientException {
 
-            final SctpResultType resultType = responseHeader.getResultType();
-            if (SctpResultType.SCTP_RESULT_OK == resultType) {
-                final List<ScAddress> list = new ArrayList<ScAddress>();
-                final int linksNumber = getLinkNumbers(bytes);
-                final Collection<ScAddress> addresses = getAddresses(bytes, linksNumber);
-                list.addAll(addresses);
-                return list;
-            }
-            throw new AnswerParseException();
+            return new SctpResultTypeHandler().handle(responseHeader,
+                    new SuccessAction<List<ScAddress>>() {
+
+                        @Override
+                        public List<ScAddress> doAction() {
+
+                            final List<ScAddress> list = new ArrayList<ScAddress>();
+                            final int linksNumber = getLinkNumbers(bytes);
+                            final Collection<ScAddress> addresses = getAddresses(bytes, linksNumber);
+                            list.addAll(addresses);
+                            return list;
+                        }
+                    });
         }
 
         private int getLinkNumbers(final byte[] bytes) {
@@ -125,18 +164,23 @@ final class ResponseBodyBuilderProvider {
 
         @Override
         public List<ScAddress> getAnswer(final byte[] bytes, final SctpResponseHeader responseHeader)
-                throws AnswerParseException {
+                throws SctpClientException {
 
-            final SctpResultType resultType = responseHeader.getResultType();
-            if (resultType == SctpResultType.SCTP_RESULT_OK) {
-                final List<ScAddress> list = new ArrayList<ScAddress>();
-                final ScAddress begin = TypeBuilder.buildScAddress(bytes);
-                final ScAddress end = TypeBuilder.buildScAddress(bytes, END_ADDRESS_BEGIN_INDEX);
-                list.add(begin);
-                list.add(end);
-                return list;
-            }
-            throw new AnswerParseException();
+            return new SctpResultTypeHandler().handle(responseHeader,
+                    new SuccessAction<List<ScAddress>>() {
+
+                        @Override
+                        public List<ScAddress> doAction() {
+
+                            final List<ScAddress> list = new ArrayList<ScAddress>();
+                            final ScAddress begin = TypeBuilder.buildScAddress(bytes);
+                            final ScAddress end = TypeBuilder.buildScAddress(bytes,
+                                    END_ADDRESS_BEGIN_INDEX);
+                            list.add(begin);
+                            list.add(end);
+                            return list;
+                        }
+                    });
 
         }
     }
@@ -145,15 +189,19 @@ final class ResponseBodyBuilderProvider {
 
         @Override
         public Integer getAnswer(final byte[] bytes, final SctpResponseHeader responseHeader)
-                throws AnswerParseException {
+                throws SctpClientException {
 
-            final SctpResultType resultType = responseHeader.getResultType();
-            if (SctpResultType.SCTP_RESULT_OK == resultType) {
-                final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-                byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-                return byteBuffer.getInt();
-            }
-            throw new AnswerParseException();
+            return new SctpResultTypeHandler().handle(responseHeader, new SuccessAction<Integer>() {
+
+                @Override
+                public Integer doAction() {
+
+                    final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+                    byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+                    return byteBuffer.getInt();
+                }
+            });
+
         }
 
     }
@@ -161,13 +209,17 @@ final class ResponseBodyBuilderProvider {
     class LinkContentBuilder implements RespBodyBuilder<String> {
 
         @Override
-        public String getAnswer(final byte[] bytes, final SctpResponseHeader responseHeader) throws AnswerParseException {
+        public String getAnswer(final byte[] bytes, final SctpResponseHeader responseHeader)
+                throws SctpClientException {
 
-            final SctpResultType resultType = responseHeader.getResultType();
-            if (resultType == SctpResultType.SCTP_RESULT_OK) {
-                return new String(bytes);
-            }
-            throw new AnswerParseException();
+            return new SctpResultTypeHandler().handle(responseHeader, new SuccessAction<String>() {
+
+                @Override
+                public String doAction() {
+
+                    return new String(bytes);
+                }
+            });
         }
 
     }
@@ -185,32 +237,41 @@ final class ResponseBodyBuilderProvider {
 
         @Override
         public List<ScIterator> getAnswer(byte[] bytes, SctpResponseHeader responseHeader)
-                throws AnswerParseException {
+                throws SctpClientException {
 
             final ScIteratorType iteratorType = getIteratorTypeFromRequest();
-            int parameterNumber = ScIteratorParameterNumberResolver
+            final int parameterNumber = ScIteratorParameterNumberResolver
                     .getParameterNumberByIteratorType(iteratorType);
-            List<ScIterator> result = new ArrayList<ScIterator>();
-            ByteArrayInputStream source = new ByteArrayInputStream(bytes);
+            final ByteArrayInputStream source = new ByteArrayInputStream(bytes);
             try {
-                int answerIterCount = InputStreamReader.readInt(source);
-                final SctpResultType resultType = responseHeader.getResultType();
-                if (SctpResultType.SCTP_RESULT_OK == resultType) {
-                    for (int iterIndex = 0; iterIndex < answerIterCount; ++iterIndex) {
-                        ScIterator scIterator = new ScIterator();
-                        for (int j = 0; j < parameterNumber; ++j) {
-                            ScAddress scAddress = TypeBuilder.buildScAddress(source);
-                            scIterator.registerParameter(scAddress);
-                        }
-                        result.add(scIterator);
-                    }
-                    return result;
-                }
+                final int answerIterCount = InputStreamReader.readInt(source);
 
-                throw new AnswerParseException();
+                return new SctpResultTypeHandler().handle(responseHeader,
+                        new SuccessAction<List<ScIterator>>() {
 
+                            @Override
+                            public List<ScIterator> doAction() throws SctpClientException {
+
+                                List<ScIterator> result = new ArrayList<ScIterator>();
+                                for (int iterIndex = 0; iterIndex < answerIterCount; ++iterIndex) {
+                                    ScIterator scIterator = new ScIterator();
+                                    for (int j = 0; j < parameterNumber; ++j) {
+                                        try {
+                                            ScAddress scAddress = TypeBuilder
+                                                    .buildScAddress(source);
+                                            scIterator.registerParameter(scAddress);
+                                        } catch (IOException e) {
+                                            throw new SctpClientException(e);
+                                        }
+
+                                    }
+                                    result.add(scIterator);
+                                }
+                                return result;
+                            }
+                        });
             } catch (IOException e) {
-                throw new AnswerParseException(e.getMessage());
+                throw new TransportException(e);
             }
         }
 

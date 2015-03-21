@@ -6,7 +6,7 @@ public class SctpRequest {
 
     private SctpRequestHeader header;
 
-    private SctpRequestBody   body;
+    private SctpRequestBody body;
 
     public SctpRequestHeader getHeader() {
 
