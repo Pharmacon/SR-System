@@ -7,7 +7,8 @@ public enum TestMessage {
     CONNECTION_FAILED("Connection Failed"),
     RUN_TEST_PACKAGE("Run test package"),
     TEST_FAILED("Test failed"),
-    TEST_SUCCESS("Test success");
+    TEST_SUCCESS("Test success"),
+    EMPTY_RESPONSE("Empty response");
 
     private String value;
 

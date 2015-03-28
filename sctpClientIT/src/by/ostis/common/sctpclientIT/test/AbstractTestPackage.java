@@ -10,9 +10,9 @@ import by.ostis.common.sctpclientIT.constants.TestMessage;
  */
 public abstract class AbstractTestPackage implements TestPackage {
 
-    protected List<AbstractIntegrationTest> tests       = new ArrayList<>();
+    protected List<AbstractIntegrationTest> tests = new ArrayList<>();
 
-    protected String                        packageName = "Default package";
+    protected String packageName = "Default package";
 
     public AbstractTestPackage(final String packageName) {
 
@@ -22,10 +22,9 @@ public abstract class AbstractTestPackage implements TestPackage {
 
     protected void printTestsState() {
 
-        System.out.println(TestMessage.RUN_TEST_PACKAGE.getValue()
-                + this.packageName);
+        System.out.println(TestMessage.RUN_TEST_PACKAGE.getValue() + this.packageName);
         for (final AbstractIntegrationTest test : this.tests) {
-            System.out.println(test.toString());
+            System.out.println(test);
         }
     }
 

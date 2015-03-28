@@ -7,7 +7,6 @@ import by.ostis.common.sctpclient.client.SctpClientImpl;
 import by.ostis.common.sctpclient.model.ScAddress;
 import by.ostis.common.sctpclient.model.ScString;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
-import by.ostis.common.sctpclient.model.response.SctpResultType;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
 import by.ostis.common.sctpclientIT.constants.TestMessage;
 import by.ostis.common.sctpclientIT.test.AbstractIntegrationTest;
@@ -19,9 +18,9 @@ import by.ostis.common.sctpclientIT.test.IntegrationTest;
  */
 public class DeafaultTestPackage extends AbstractTestPackage {
 
-    private static final String SERVER_URL  = "localhost";
+    private static final String SERVER_URL = "localhost";
 
-    private static final int    SERVER_PORT = 55770;
+    private static final int SERVER_PORT = 55770;
 
     public DeafaultTestPackage(final String packageName) {
 
@@ -32,7 +31,11 @@ public class DeafaultTestPackage extends AbstractTestPackage {
     public void runTestPackage() {
 
         for (final IntegrationTest test : this.tests) {
-            test.run();
+            try {
+                test.run();
+            } catch (Exception e) {
+
+            }
         }
         printTestsState();
     }
@@ -40,53 +43,58 @@ public class DeafaultTestPackage extends AbstractTestPackage {
     @Override
     protected void setTests() {
 
-        this.tests.add(new AbstractIntegrationTest(
-                "check create element method") {
+        this.tests.add(new AbstractIntegrationTest("check create element method") {
 
             @Override
             public void run() {
 
-                final SctpClient client = new SctpClientImpl();
-                client.init(SERVER_URL, SERVER_PORT);
-                SctpResponse<ScAddress> createResponse = client
-                        .createElement(ScElementType.SC_TYPE_NODE);
-                ScAddress newElement = createResponse.getAnswer();
-                if (null != newElement) {
-                    SctpResponse<Boolean> checkExResponse = client
-                            .checkElementExistence(newElement);
-                    if (checkExResponse.getAnswer()) {
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    SctpResponse<ScAddress> createResponse = client
+                            .createElement(ScElementType.SC_TYPE_NODE);
+                    if (!createResponse.isEmpty()) {
+                        ScAddress newElement = createResponse.getAnswer();
                         setState(TestMessage.TEST_SUCCESS.getValue());
+                        setTestMessage(newElement.toString());
                     } else {
                         setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue());
                     }
-
-                } else {
+                } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
                 }
             }
         });
-        this.tests.add(new AbstractIntegrationTest(
-                "check delete element method") {
+        this.tests.add(new AbstractIntegrationTest("check delete element method") {
 
             @Override
             public void run() {
 
-                final SctpClient client = new SctpClientImpl();
-                client.init(SERVER_URL, SERVER_PORT);
-                SctpResponse<ScAddress> createResponse = client
-                        .createElement(ScElementType.SC_TYPE_NODE);
-                ScAddress newElement = createResponse.getAnswer();
-                if (null != newElement) {
-                    SctpResponse<Boolean> deleteResponse = client
-                            .deleteElement(newElement);
-                    if (deleteResponse.getAnswer()) {
-                        setState(TestMessage.TEST_SUCCESS.getValue());
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    SctpResponse<ScAddress> createResponse = client
+                            .createElement(ScElementType.SC_TYPE_NODE);
+                    if (!createResponse.isEmpty()) {
+                        SctpResponse<Boolean> deleteResponse = client.deleteElement(createResponse
+                                .getAnswer());
+                        if (deleteResponse.getAnswer()) {
+                            setState(TestMessage.TEST_SUCCESS.getValue());
+                        } else {
+                            setState(TestMessage.TEST_FAILED.getValue());
+                            setTestMessage("Node isn't delete");
+                        }
+
                     } else {
                         setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                + " while create test node");
                     }
-
-                } else {
+                } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
                 }
             }
         });
@@ -95,202 +103,259 @@ public class DeafaultTestPackage extends AbstractTestPackage {
             @Override
             public void run() {
 
-                final SctpClient client = new SctpClientImpl();
-                client.init(SERVER_URL, SERVER_PORT);
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
 
-                SctpResponse<ScAddress> node1Resp = client
-                        .createElement(ScElementType.SC_TYPE_NODE);
-                SctpResponse<ScAddress> node2Resp = client
-                        .createElement(ScElementType.SC_TYPE_NODE);
-                final ScAddress node1 = node1Resp.getAnswer();
-                final ScAddress node2 = node2Resp.getAnswer();
-                if (null != node1 && null != node2) {
+                    SctpResponse<ScAddress> node1Resp = client
+                            .createElement(ScElementType.SC_TYPE_NODE);
+                    SctpResponse<ScAddress> node2Resp = client
+                            .createElement(ScElementType.SC_TYPE_NODE);
 
-                    SctpResponse<ScAddress> arcResp = client.createScArc(
-                            ScElementType.SC_TYPE_ARC_ACCESS, node1, node2);
-                    if (null != arcResp.getAnswer()) {
-                        setState(TestMessage.TEST_SUCCESS.getValue());
-                    } else {
-                        setState(TestMessage.TEST_FAILED.getValue());
-                    }
-
-                } else {
-                    setState(TestMessage.TEST_FAILED.getValue());
-                }
-            }
-        });
-        this.tests.add(new AbstractIntegrationTest(
-                "check create sc link method") {
-
-            @Override
-            public void run() {
-
-                final SctpClient client = new SctpClientImpl();
-                client.init(SERVER_URL, SERVER_PORT);
-                SctpResponse<ScAddress> createResponse = client.createScLink();
-                final ScAddress newElement = (ScAddress) createResponse
-                        .getAnswer();
-                if (null != newElement) {
-
-                    SctpResponse<Boolean> checkExResponse = client
-                            .checkElementExistence(newElement);
-                    if (checkExResponse.getAnswer()) {
-                        setState(TestMessage.TEST_SUCCESS.getValue());
-                    } else {
-                        setState(TestMessage.TEST_FAILED.getValue());
-                    }
-
-                } else {
-                    setState(TestMessage.TEST_FAILED.getValue());
-                }
-            }
-        });
-        this.tests.add(new AbstractIntegrationTest(
-                "check search element by sys_idtf method") {
-
-            @Override
-            public void run() {
-
-                final SctpClient client = new SctpClientImpl();
-                client.init(SERVER_URL, SERVER_PORT);
-                SctpResponse<ScAddress> response = client
-                        .searchElement(new ScString("lang_en"));
-                final ScAddress newElement = response.getAnswer();
-                if (null != newElement) {
-                    setState(TestMessage.TEST_SUCCESS.getValue() + " ScAdress:"
-                            + newElement.toString());
-                } else {
-                    setState(TestMessage.TEST_FAILED.getValue());
-                }
-            }
-        });
-        /*
-         * need to add functionality at client for this test this.tests.add(new
-         * AbstractIntegrationTest( "check arc begin & end method") {
-         * 
-         * @Override public void run() {
-         * 
-         * final SctpClient client = new SctpClientImpl();
-         * client.init(SERVER_URL, SERVER_PORT);
-         * 
-         * SctpResponse<ScAddress> node1Resp = client
-         * .createElement(ScElementType.SC_TYPE_NODE); SctpResponse<ScAddress>
-         * node2Resp = client .createElement(ScElementType.SC_TYPE_NODE);
-         * 
-         * if ((node1Resp.getHeader().getResultType() ==
-         * SctpResultType.SCTP_RESULT_OK) &&
-         * (node2Resp.getHeader().getResultType() ==
-         * SctpResultType.SCTP_RESULT_OK)) {
-         * 
-         * final ScAddress node1 = node1Resp.getAnswer(); final ScAddress node2
-         * = node2Resp.getAnswer(); SctpResponse<ScAddress> arcResp =
-         * client.createScArc( ScElementType.SC_TYPE_ARC_ACCESS, node1, node2);
-         * if (arcResp.getHeader().getResultType() ==
-         * SctpResultType.SCTP_RESULT_OK) { final ScAddress arc = (ScAddress)
-         * arcResp.getAnswer(); SctpResponse<Void> begEndResp =
-         * client.getArcBeginAndEnd(arc); if
-         * (begEndResp.getHeader().getResultType() ==
-         * SctpResultType.SCTP_RESULT_OK) { final ScAddress begElement =
-         * begEndResp.getAnswer(); final ScAddress endElement =
-         * begEndResp.getAnswer(); setState(TestMessage.TEST_SUCCESS.getValue()
-         * + "Arc begin:" + begElement.toString() + " Arc end:" +
-         * endElement.toString()); } else {
-         * setState(TestMessage.TEST_FAILED.getValue()); }
-         * 
-         * } else { setState(TestMessage.TEST_FAILED.getValue()); }
-         * 
-         * } else { setState(TestMessage.TEST_FAILED.getValue()); }
-         * 
-         * } });
-         */
-        this.tests
-                .add(new AbstractIntegrationTest("check search links method") {
-
-                    @Override
-                    public void run() {
-
-                        final SctpClient client = new SctpClientImpl();
-                        client.init(SERVER_URL, SERVER_PORT);
-                        SctpResponse<List<ScAddress>> response = client
-                                .searchScLinks(new ScString("Русский язык"));
-                        if (response.getHeader().getResultType() == SctpResultType.SCTP_RESULT_OK) {
-                            final int linksCount = response.getAnswer().size();
-                            setState(TestMessage.TEST_SUCCESS.getValue()
-                                    + " Links count: " + linksCount);
+                    if (!node1Resp.isEmpty() && !node2Resp.isEmpty()) {
+                        final ScAddress node1 = node1Resp.getAnswer();
+                        final ScAddress node2 = node2Resp.getAnswer();
+                        SctpResponse<ScAddress> arcResp = client.createScArc(
+                                ScElementType.SC_TYPE_ARC_ACCESS, node1, node2);
+                        if (!arcResp.isEmpty()) {
+                            setState(TestMessage.TEST_SUCCESS.getValue());
+                            setTestMessage("Triple: node1: " + node1 + " arc: "
+                                    + arcResp.getAnswer() + " node2: " + node2);
                         } else {
                             setState(TestMessage.TEST_FAILED.getValue());
+                            setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                    + " while create test arc");
                         }
+
+                    } else {
+                        setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                + " while create test node");
                     }
-                });
-        this.tests
-                .add(new AbstractIntegrationTest("check set sys_idtf method") {
+                } catch (Exception e) {
+                    setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
+                }
+            }
+        });
+        this.tests.add(new AbstractIntegrationTest("check create sc link method") {
 
-                    @Override
-                    public void run() {
+            @Override
+            public void run() {
 
-                        final SctpClient client = new SctpClientImpl();
-                        client.init(SERVER_URL, SERVER_PORT);
-                        SctpResponse<ScAddress> nodeResp = client
-                                .createElement(ScElementType.SC_TYPE_NODE);
-                        final ScAddress newElement = nodeResp.getAnswer();
-                        if (null != newElement) {
-                            
-                            String idtf = "test_idtf";
-                            SctpResponse<Boolean> setSysIdtfResp = client
-                                    .setSystemIdentifier(newElement,
-                                            new ScString(idtf));
-                            if (setSysIdtfResp.getAnswer()) {
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    SctpResponse<ScAddress> createResponse = client.createScLink();
+                    if (!createResponse.isEmpty()) {
+                        final ScAddress newElement = createResponse.getAnswer();
+                        setState(TestMessage.TEST_SUCCESS.getValue());
+                        setTestMessage(newElement.toString());
+                    } else {
+                        setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue());
+                    }
 
-                                SctpResponse<ScAddress> getElementResp = client
-                                        .searchElement(new ScString(idtf));
-                                ScAddress reloadElem = getElementResp.getAnswer();
-                                if (null != reloadElem && newElement.equals(reloadElem)) {
-                                    setState(TestMessage.TEST_SUCCESS
-                                            .getValue());
+                } catch (Exception e) {
+                    setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
+                }
+            }
+        });
+        this.tests.add(new AbstractIntegrationTest("check arc begin & end method") {
+
+            @Override
+            public void run() {
+
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+
+                    SctpResponse<ScAddress> node1Resp = client
+                            .createElement(ScElementType.SC_TYPE_NODE);
+                    SctpResponse<ScAddress> node2Resp = client
+                            .createElement(ScElementType.SC_TYPE_NODE);
+
+                    if (!node1Resp.isEmpty() && !node2Resp.isEmpty()) {
+
+                        final ScAddress node1 = node1Resp.getAnswer();
+                        final ScAddress node2 = node2Resp.getAnswer();
+                        SctpResponse<ScAddress> arcResp = client.createScArc(
+                                ScElementType.SC_TYPE_ARC_ACCESS, node1, node2);
+                        if (!arcResp.isEmpty()) {
+                            final ScAddress arc = arcResp.getAnswer();
+                            SctpResponse<List<ScAddress>> begEndResp = client
+                                    .getArcBeginAndEnd(arc);
+                            if (!begEndResp.isEmpty()) {
+                                final ScAddress begElement = begEndResp.getAnswer().get(0);
+                                final ScAddress endElement = begEndResp.getAnswer().get(1);
+                                if (begElement.equals(node1) && endElement.equals(node2)) {
+                                    setState(TestMessage.TEST_SUCCESS.getValue());
+                                    setTestMessage("Arc begin:" + begElement + " Arc end:"
+                                            + endElement);
                                 } else {
                                     setState(TestMessage.TEST_FAILED.getValue());
+                                    setTestMessage("Arc begin:" + begElement + " Arc end:"
+                                            + endElement + " and node1:" + node1 + " node2:"
+                                            + node2 + " not equals");
                                 }
-                                setState(TestMessage.TEST_SUCCESS.getValue());
                             } else {
                                 setState(TestMessage.TEST_FAILED.getValue());
+                                setTestMessage(TestMessage.EMPTY_RESPONSE
+                                        + " while get arc begin and end");
                             }
 
                         } else {
                             setState(TestMessage.TEST_FAILED.getValue());
+                            setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                    + " while create test arc");
                         }
+
+                    } else {
+                        setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                + " while create test node");
                     }
-                });
-        this.tests.add(new AbstractIntegrationTest(
-                "check get & set link content methods") {
+                } catch (Exception e) {
+                    setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
+                }
+
+            }
+        });
+        this.tests.add(new AbstractIntegrationTest("check search element by sys_idtf method") {
 
             @Override
             public void run() {
 
-                final SctpClient client = new SctpClientImpl();
-                client.init(SERVER_URL, SERVER_PORT);
-                SctpResponse<ScAddress> createResponse = client.createScLink();
-                if (createResponse.getHeader().getResultType() == SctpResultType.SCTP_RESULT_OK) {
-                    ScAddress link = (ScAddress) createResponse.getAnswer();
-                    ScString content = new ScString("test content");
-                    SctpResponse<Boolean> setContentResponse = client
-                            .setScRefContent(link, content);
-                    if (setContentResponse.getAnswer()) {
-                        SctpResponse<String> getContentResponse = client
-                                .getScLinkContent(link);
-                        if ((setContentResponse.getHeader().getResultType() == SctpResultType.SCTP_RESULT_OK)
-                                && content.equals(getContentResponse
-                                        .getAnswer())) {
-                            setState(TestMessage.TEST_SUCCESS.getValue());
-                        } else {
-                            setState(TestMessage.TEST_FAILED.getValue());
-                        }
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    SctpResponse<ScAddress> response = client
+                            .searchElement(new ScString("lang_en"));
+                    if (!response.isEmpty()) {
+                        final ScAddress newElement = response.getAnswer();
+                        setState(TestMessage.TEST_SUCCESS.getValue());
+                        setTestMessage(newElement.toString());
                     } else {
                         setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue());
                     }
-                } else {
+                } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
                 }
             }
         });
+        this.tests.add(new AbstractIntegrationTest("check search links method") {
+
+            @Override
+            public void run() {
+
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    SctpResponse<List<ScAddress>> response = client.searchScLinks(new ScString(
+                            "Русский язык"));
+                    if (!response.isEmpty()) {
+                        final int linksCount = response.getAnswer().size();
+                        setState(TestMessage.TEST_SUCCESS.getValue());
+                        setTestMessage("Links count: " + linksCount);
+                    } else {
+                        setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue());
+                    }
+                } catch (Exception e) {
+                    setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
+                }
+            }
+        });
+        this.tests.add(new AbstractIntegrationTest("check set sys_idtf method") {
+
+            @Override
+            public void run() {
+
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    SctpResponse<ScAddress> nodeResp = client
+                            .createElement(ScElementType.SC_TYPE_NODE);
+                    if (!nodeResp.isEmpty()) {
+                        final ScAddress newElement = nodeResp.getAnswer();
+                        String idtf = "test1_idtf";
+                        SctpResponse<Boolean> setSysIdtfResp = client.setSystemIdentifier(
+                                newElement, new ScString(idtf));
+                        if (setSysIdtfResp.getAnswer()) {
+
+                            SctpResponse<ScAddress> getElementResp = client
+                                    .searchElement(new ScString(idtf));
+                            ScAddress reloadElem = getElementResp.getAnswer();
+                            if (!getElementResp.isEmpty() && newElement.equals(reloadElem)) {
+                                setState(TestMessage.TEST_SUCCESS.getValue());
+                                setTestMessage("Element with address:" + newElement + "has idtf:"
+                                        + idtf);
+                            } else {
+                                setState(TestMessage.TEST_FAILED.getValue());
+                                setTestMessage("Elemt with idtf:" + idtf + "does not exist");
+                            }
+                        } else {
+                            setState(TestMessage.TEST_FAILED.getValue());
+                            setTestMessage("Response return false, identifier didn't set");
+                        }
+
+                    } else {
+                        setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                + " while create test node");
+                    }
+                } catch (Exception e) {
+                    setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
+                }
+            }
+        });
+        this.tests.add(new AbstractIntegrationTest("check get & set link content methods") {
+
+            @Override
+            public void run() {
+
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    SctpResponse<ScAddress> createResponse = client.createScLink();
+                    if (!createResponse.isEmpty()) {
+                        ScAddress link = createResponse.getAnswer();
+                        String linkContent = "test content";
+                        ScString content = new ScString(linkContent);
+                        SctpResponse<Boolean> setContentResponse = client.setScRefContent(link,
+                                content);
+                        if (setContentResponse.getAnswer()) {
+                            SctpResponse<String> getContentResponse = client.getScLinkContent(link);
+                            if (!setContentResponse.isEmpty()
+                                    && content.getContent().equals(getContentResponse.getAnswer())) {
+                                setState(TestMessage.TEST_SUCCESS.getValue());
+                                setTestMessage("Link:" + link + " has content:" + linkContent);
+                            } else {
+                                setState(TestMessage.TEST_FAILED.getValue());
+                                setTestMessage("Link wtih content" + linkContent + " doesn't exist");
+                            }
+                        } else {
+                            setState(TestMessage.TEST_FAILED.getValue());
+                            setTestMessage("Response return false, link content didn't set");
+                        }
+                    } else {
+                        setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                + " while create test node");
+                    }
+
+                } catch (Exception e) {
+                    setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
+                }
+            }
+        });
+
     }
 }

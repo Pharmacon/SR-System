@@ -12,6 +12,18 @@ public abstract class AbstractIntegrationTest implements IntegrationTest {
         return testName;
     }
 
+    private String testMessage="";
+
+    public String getTestMessage() {
+
+        return testMessage;
+    }
+
+    public void setTestMessage(String testMessage) {
+
+        this.testMessage = testMessage;
+    }
+
     private String state = "not run";
 
     public AbstractIntegrationTest(final String testName) {
@@ -32,6 +44,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTest {
     @Override
     public String toString() {
 
-        return "Test : " + this.testName + "State: " + this.state;
+        return "Test : " + this.testName + "\nState: " + this.state + "\nMessage: "
+                + this.testMessage + "\n";
     }
 }
