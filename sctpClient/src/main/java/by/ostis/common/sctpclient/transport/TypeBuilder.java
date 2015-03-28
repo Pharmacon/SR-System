@@ -23,19 +23,9 @@ class TypeBuilder {
         return new ScAddress(segment, offset);
     }
 
-    public static ScAddress buildScAddress(byte[] bytes, int begin) {
-
-        ByteBuffer buffer = ByteBuffer.wrap(bytes, begin, ScParameterSize.SC_ADDRESS.getSize());
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
-        short segment = buffer.getShort(SEGMENT_BEGIN_INDEX);
-        short offset = buffer.getShort(OFFSET_BEGIN_INDEX);
-        return new ScAddress(segment, offset);
-
-    }
-
     public static ScAddress buildScAddress(InputStream source) throws IOException {
 
-        byte[] scAddressBytes = new byte[4];
+        byte[] scAddressBytes = new byte[ScParameterSize.SC_ADDRESS.getSize()];
         source.read(scAddressBytes);
         ByteBuffer byteBuffer = ByteBuffer.wrap(scAddressBytes);
         short segment = byteBuffer.getShort(SEGMENT_BEGIN_INDEX);

@@ -149,7 +149,9 @@ final class ResponseBodyBuilderProvider {
             final List<ScAddress> list = new LinkedList<ScAddress>();
             int beginIndex = LINKS_ADDRESSES_BEGIN_INDEX;
             for (int i = 0; i < number; i++) {
-                final ScAddress address = TypeBuilder.buildScAddress(bytes, beginIndex);
+                byte[] subArray = Arrays.copyOfRange(bytes, beginIndex, beginIndex
+                        + ScParameterSize.SC_ADDRESS.getSize());
+                final ScAddress address = TypeBuilder.buildScAddress(subArray);
                 list.add(address);
                 beginIndex += ScParameterSize.SC_ADDRESS.getSize();
             }
@@ -174,8 +176,9 @@ final class ResponseBodyBuilderProvider {
 
                             final List<ScAddress> list = new ArrayList<ScAddress>();
                             final ScAddress begin = TypeBuilder.buildScAddress(bytes);
-                            final ScAddress end = TypeBuilder.buildScAddress(bytes,
-                                    END_ADDRESS_BEGIN_INDEX);
+                            byte[] subArray = Arrays.copyOfRange(bytes, END_ADDRESS_BEGIN_INDEX,
+                                    END_ADDRESS_BEGIN_INDEX + ScParameterSize.SC_ADDRESS.getSize());
+                            final ScAddress end = TypeBuilder.buildScAddress(subArray);
                             list.add(begin);
                             list.add(end);
                             return list;
