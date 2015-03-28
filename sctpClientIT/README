@@ -1,0 +1,16 @@
+Bug at sc-machine!
+
+Need to change constant that sc-machine write to result header at processSetSysIdtf function and rebuild sc-machine.
+File name sctpCommand.cpp:
+
+eSctpErrorCode sctpCommand::processSetSysIdtf(quint32 cmdFlags, quint32 cmdId, QDataStream *params, QIODevice *outDevice)
+{
+    ...
+
+//  writeResultHeader(SCTP_CMD_FIND_ELEMENT_BY_SYSITDF, cmdId, sc_helper_set_system_identifier(mContext, addr, data, data_len) != SC_RESULT_OK ? SCTP_RESULT_FAIL : SCTP_RESULT_OK, 0, outDevice);    
+    writeResultHeader(SCTP_CMD_SET_SYSIDTF, cmdId, sc_helper_set_system_identifier(mContext, addr, data, data_len) != SC_RESULT_OK ? SCTP_RESULT_FAIL : SCTP_RESULT_OK, 0, outDevice);
+
+    ...
+
+    return SCTP_NO_ERROR;
+}
