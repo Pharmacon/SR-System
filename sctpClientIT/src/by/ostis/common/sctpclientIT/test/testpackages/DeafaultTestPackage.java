@@ -1,13 +1,17 @@
 package by.ostis.common.sctpclientIT.test.testpackages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import by.ostis.common.sctpclient.client.SctpClient;
 import by.ostis.common.sctpclient.client.SctpClientImpl;
 import by.ostis.common.sctpclient.model.ScAddress;
+import by.ostis.common.sctpclient.model.ScIterator;
+import by.ostis.common.sctpclient.model.ScParameter;
 import by.ostis.common.sctpclient.model.ScString;
 import by.ostis.common.sctpclient.model.response.SctpResponse;
 import by.ostis.common.sctpclient.utils.constants.ScElementType;
+import by.ostis.common.sctpclient.utils.constants.ScIteratorType;
 import by.ostis.common.sctpclientIT.constants.TestMessage;
 import by.ostis.common.sctpclientIT.test.AbstractIntegrationTest;
 import by.ostis.common.sctpclientIT.test.AbstractTestPackage;
@@ -354,6 +358,125 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     setState(TestMessage.TEST_FAILED.getValue());
                     setTestMessage(e.getStackTrace().toString());
                 }
+            }
+        });
+        this.tests.add(new AbstractIntegrationTest("check scIterator 3") {
+
+            @Override
+            public void run() {
+
+                try {
+                    final SctpClient client = new SctpClientImpl();
+                    client.init(SERVER_URL, SERVER_PORT);
+                    ScElementType el1Type = ScElementType.SC_TYPE_NODE;
+                    ScElementType el3Type = ScElementType.SC_TYPE_NODE;
+                    ScElementType el5Type = ScElementType.SC_TYPE_NODE;
+                    ScElementType arc2Type = ScElementType.SC_TYPE_ARC_POS;
+                    ScElementType arc4Type = ScElementType.SC_TYPE_ARC_POS;
+                    SctpResponse<ScAddress> createEl1Response = client.createElement(el1Type);
+                    SctpResponse<ScAddress> createEl3Response = client.createElement(el3Type);
+                    SctpResponse<ScAddress> createEl5Response = client.createElement(el5Type);
+                    if (!createEl3Response.isEmpty() && !createEl1Response.isEmpty()
+                            && !createEl5Response.isEmpty()) {
+                        ScAddress el1 = createEl1Response.getAnswer();
+                        ScAddress el3 = createEl3Response.getAnswer();
+                        ScAddress el5 = createEl5Response.getAnswer();
+
+                        SctpResponse<ScAddress> createEl2Response = client.createScArc(arc2Type,
+                                el1, el3);
+                        SctpResponse<ScAddress> createEl4Response = client.createScArc(arc4Type,
+                                el1, el5);
+
+                        if (!createEl2Response.isEmpty() && !createEl4Response.isEmpty()) {
+                            //ScAddress arc2 = createEl2Response.getAnswer();
+                            ScAddress arc4 = createEl4Response.getAnswer();
+                            List<ScParameter> params1 = new ArrayList<>();
+                            params1.add(el1);
+                            params1.add(arc2Type);
+                            params1.add(el3Type);
+                            ScIteratorType iterType1 = ScIteratorType.SCTP_ITERATOR_3F_A_A;
+                            SctpResponse<List<ScIterator>> iterator1Response = client
+                                    .searchByIterator(iterType1, params1);
+                            List<ScParameter> params2 = new ArrayList<>();
+                            params2.add(el1Type);
+                            params2.add(arc4Type);
+                            params2.add(el5);
+                            ScIteratorType iterType2 = ScIteratorType.SCTP_ITERATOR_3_A_A_F;
+                            SctpResponse<List<ScIterator>> iterator2Response = client
+                                    .searchByIterator(iterType2, params2);
+                            List<ScParameter> params3 = new ArrayList<>();
+                            params3.add(el1);
+                            params3.add(arc4Type);
+                            params3.add(el5);
+                            ScIteratorType iterType3 = ScIteratorType.SCTP_ITERATOR_3F_A_F;
+                            SctpResponse<List<ScIterator>> iterator3Response = client
+                                    .searchByIterator(iterType3, params3);
+                            if (!iterator1Response.isEmpty() && !iterator2Response.isEmpty()
+                                    && iterator3Response.isEmpty()) {
+                                List<ScIterator> result1 = iterator1Response.getAnswer();
+                                List<ScIterator> result2 = iterator2Response.getAnswer();
+                                List<ScIterator> result3 = iterator3Response.getAnswer();
+                                // 3F_A_A iterator result check
+                                if (result1.size() != 2
+                                        && !el1.equals(result1.get(0).getElement(0))
+                                        && !el1.equals(result1.get(1).getElement(0))) {
+                                    setState(TestMessage.TEST_FAILED.getValue());
+                                    setTestMessage("Illegal result ScParameters at iterator type: "
+                                            + iterType1.getValue());
+                                    return;
+                                }
+                                // 3A_A_F iterator result check
+                                if (result2.size() != 1
+                                        && !el1.equals(result2.get(0).getElement(0))
+                                        && !arc4.equals(result2.get(0).getElement(1))
+                                        && !el5.equals(result2.get(0).getElement(2))) {
+                                    setState(TestMessage.TEST_FAILED.getValue());
+                                    setTestMessage("Illegal result ScParameters at iterator type: "
+                                            + iterType2.getValue());
+                                    return;
+                                }
+                                // 3F_A_F iterator result check
+                                if (result3.size() != 1
+                                        && !arc4.equals(result3.get(0).getElement(1))
+                                        && !el1.equals(result3.get(0).getElement(0))
+                                        && !el5.equals(result3.get(0).getElement(2))) {
+                                    setState(TestMessage.TEST_FAILED.getValue());
+                                    setTestMessage("Illegal result ScParameters at iterator type: "
+                                            + iterType3.getValue());
+                                    return;
+                                }
+                                // all check success
+                                setState(TestMessage.TEST_SUCCESS.getValue());
+                                setTestMessage("Parameters for all 3 iterators valid");
+                            } else {
+                                setState(TestMessage.TEST_FAILED.getValue());
+                                setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                        + " while search iterators");
+                            }
+                        } else {
+                            setState(TestMessage.TEST_FAILED.getValue());
+                            setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                    + " while create test arc");
+                        }
+
+                    } else {
+                        setState(TestMessage.TEST_FAILED.getValue());
+                        setTestMessage(TestMessage.EMPTY_RESPONSE.getValue()
+                                + " while create test node");
+                    }
+
+                } catch (Exception e) {
+                    setState(TestMessage.TEST_FAILED.getValue());
+                    setTestMessage(e.getStackTrace().toString());
+                }
+            }
+        });
+        this.tests.add(new AbstractIntegrationTest("check scIterator 5") {
+
+            @Override
+            public void run() {
+
+                
             }
         });
 

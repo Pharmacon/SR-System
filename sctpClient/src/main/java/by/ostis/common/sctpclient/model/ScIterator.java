@@ -6,24 +6,29 @@ import java.util.List;
 
 public class ScIterator implements ScParameter {
 
-    private List<ScParameter> paremeters;
+    private List<ScParameter> parameters;
 
     public ScIterator() {
 
-        this.paremeters = new ArrayList<>();
+        this.parameters = new ArrayList<>();
     }
 
     public ScIterator registerParameter(ScParameter param) {
 
-        paremeters.add(param);
+        parameters.add(param);
         return this;
     }
-
+    
+    public ScParameter getElement(int index){
+        
+        return parameters.get(index);
+    }
+    
     @Override
     public byte[] getBytes() {
 
         ByteBuffer tempBuffer = ByteBuffer.allocate(getByteSize());
-        for (ScParameter parameter : paremeters) {
+        for (ScParameter parameter : parameters) {
             tempBuffer.put(parameter.getBytes());
         }
         return tempBuffer.array();
@@ -33,7 +38,7 @@ public class ScIterator implements ScParameter {
     public int getByteSize() {
 
         int byteLenght = 0;
-        for (ScParameter scParameter : paremeters) {
+        for (ScParameter scParameter : parameters) {
             byteLenght += scParameter.getByteSize();
         }
         return byteLenght;
