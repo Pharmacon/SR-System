@@ -1,6 +1,9 @@
 package by.ostis.common.sctpclientIT.test.testpackages;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import by.ostis.common.sctpclient.client.SctpClient;
@@ -16,6 +19,7 @@ import by.ostis.common.sctpclientIT.constants.TestMessage;
 import by.ostis.common.sctpclientIT.test.AbstractIntegrationTest;
 import by.ostis.common.sctpclientIT.test.AbstractTestPackage;
 import by.ostis.common.sctpclientIT.test.IntegrationTest;
+import by.ostis.common.sctpclientIT.util.PrintUtils;
 
 /**
  * @author Andrew Nepogoda Feb 15, 2015
@@ -67,7 +71,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     }
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -98,7 +102,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     }
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -138,7 +142,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     }
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -162,7 +166,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
 
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -222,7 +226,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     }
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
 
             }
@@ -247,7 +251,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     }
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -271,7 +275,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     }
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -315,7 +319,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                     }
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -356,7 +360,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
 
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -412,7 +416,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                             SctpResponse<List<ScIterator>> iterator3Response = client
                                     .searchByIterator(iterType3, params3);
                             if (!iterator1Response.isEmpty() && !iterator2Response.isEmpty()
-                                    && iterator3Response.isEmpty()) {
+                                    && !iterator3Response.isEmpty()) {
                                 List<ScIterator> result1 = iterator1Response.getAnswer();
                                 List<ScIterator> result2 = iterator2Response.getAnswer();
                                 List<ScIterator> result3 = iterator3Response.getAnswer();
@@ -467,7 +471,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
 
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
@@ -574,7 +578,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
                                 SctpResponse<List<ScIterator>> iterator6Response = client
                                         .searchByIterator(iterType6, params6);
                                 if (!iterator1Response.isEmpty() && !iterator2Response.isEmpty()
-                                        && iterator3Response.isEmpty()
+                                        && !iterator3Response.isEmpty()
                                         && !iterator4Response.isEmpty()
                                         && !iterator5Response.isEmpty()
                                         && !iterator6Response.isEmpty()) {
@@ -683,7 +687,7 @@ public class DeafaultTestPackage extends AbstractTestPackage {
 
                 } catch (Exception e) {
                     setState(TestMessage.TEST_FAILED.getValue());
-                    setTestMessage(e.getStackTrace().toString());
+                    setTestMessage(PrintUtils.stackTraceToString(e));
                 }
             }
         });
