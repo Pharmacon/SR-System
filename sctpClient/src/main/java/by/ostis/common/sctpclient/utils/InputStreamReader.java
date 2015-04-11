@@ -13,9 +13,8 @@ public class InputStreamReader {
 
         byte[] intBytes = new byte[INTEGER_BYTE_SIZE];
         source.read(intBytes);
-        ByteBuffer tempBuffer = ByteBuffer.allocate(INTEGER_BYTE_SIZE);
+        ByteBuffer tempBuffer = ByteBuffer.wrap(intBytes);
         tempBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        tempBuffer.put(intBytes);
         return tempBuffer.getInt();
     }
 
